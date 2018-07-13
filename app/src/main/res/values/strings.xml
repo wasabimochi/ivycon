@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ivycon2.0</string>
+    <string name="ivycon">ListBasic</string>
+    <string-array name="spice">
+    <item>1年</item>
+    <item>2年</item>
+    <item>3年</item>
+
+    </string-array>
+</resources>

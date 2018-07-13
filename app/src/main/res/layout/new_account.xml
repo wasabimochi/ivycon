@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="368dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scrollbarStyle="outsideInset"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:text="新規登録"
+                android:textAlignment="center"
+                android:textSize="36sp"
+                tools:layout_editor_absoluteX="42dp"
+                tools:layout_editor_absoluteY="142dp" />
+
+            <TextView
+                android:id="@+id/SchoolReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="学籍番号"
+                android:textSize="30sp"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="76dp" />
+
+            <EditText
+                android:id="@+id/new_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="numberSigned"
+                android:text="学籍番号を入力してください"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="270dp" />
+
+            <TextView
+                android:id="@+id/Department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="学科"
+                android:textSize="30sp"
+                app:layout_constraintTop_toBottomOf="@+id/new_number"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="200dp" />
+
+            <EditText
+                android:id="@+id/new_department"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="学科を入力してください"
+                tools:layout_editor_absoluteX="93dp"
+                tools:layout_editor_absoluteY="261dp" />
+
+            <TextView
+                android:id="@+id/Grade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="学年"
+                android:textSize="30sp"
+                tools:layout_editor_absoluteX="368dp"
+                tools:layout_editor_absoluteY="211dp" />
+
+            <EditText
+                android:id="@+id/new_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="numberSigned"
+                android:text="学年を入力してください"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="350dp" />
+
+            <TextView
+                android:id="@+id/Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="名前"
+                android:textSize="30sp"
+                tools:layout_editor_absoluteX="90dp"
+                tools:layout_editor_absoluteY="419dp" />
+
+            <EditText
+                android:id="@+id/new_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="448dp"
+                tools:text="名前を入力してください" />
+
+            <TextView
+                android:id="@+id/Mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="メールアドレス"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/new_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:text="メールアドレスを入力してください" />
+
+            <TextView
+                android:id="@+id/Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="パスワード"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/new_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/RePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="パスワード（確認用）"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/password_again"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <Button
+                android:id="@+id/new_account_button"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="120dp"
+                android:text="Button" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>
