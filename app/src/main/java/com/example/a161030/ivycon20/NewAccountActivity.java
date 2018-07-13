@@ -112,35 +112,39 @@ public class NewAccountActivity extends AppCompatActivity {
                     //UIDの取得
                     UID = user.getUid().toString();
 
-                    //UIDのrefの取得
-                    mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID.toString()).getRef();
-
                     //インスタンス取得
                     Map<String, Object> childUpdates = new HashMap<>();
 
+                    //UIDのrefの習得
+                    mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID.toString()).getRef();
+
                     //データ書き込みのイベント複数セッティング
-                    childUpdates.put("UID", UID);
+                    //学籍番号
                     childUpdates.put("Num", num);
+                    //学科
                     childUpdates.put("Depar", depar);
+                    //学年
                     childUpdates.put("Year", yer);
+                    //名前
                     childUpdates.put("Name", nam);
 
-                    //イベント実行
-                    mDatabase.updateChildren(childUpdates);
+                    if(childUpdates != null) {
 
-                    //インテントの作成
-                    Intent intent = new Intent(getApplication(), StudentTimeline.class);
+                        //イベント実行
+                        mDatabase.updateChildren(childUpdates);
 
-                    //画面遷移
-                    startActivity(intent);
+                        //インテントの作成
+                        Intent intent = new Intent(getApplication(), StudentTimeline.class);
 
+                        //画面遷移
+                        startActivity(intent);
+                    }else{
+                        //Toast.makeText(NewAccountActivity.this, "どぉしてだよぉ", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     // サインインに失敗した場合は、ユーザーにメッセージを表示します。
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-
-                    //メッセージ表示
                     Toast.makeText(NewAccountActivity.this, "認証に失敗しました。", Toast.LENGTH_SHORT).show();
-
                     Log.d(TAG,"作れなかった");
                 }
             }
