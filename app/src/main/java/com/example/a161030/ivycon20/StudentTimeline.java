@@ -65,15 +65,16 @@ public class StudentTimeline extends AppCompatActivity {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
+                for (DataSnapshot postSnapshot: dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
+                    //Dataをとってくる
+                    Object Data = postSnapshot.child("Data").getValue();
+                    //UIDをとってくる
+                    Object UID = postSnapshot.child("UID").getValue();
 
-                //全データを取ってくる
-                Object Value = dataSnapshot.getValue();
-                //厳選してとる
-                Object Value2 = dataSnapshot.child("Ivycon").child("Student").child("161019").child("Photo").getValue();
-
-                //Log.w("ゲット",Value.toString());
-                assert Value2 != null;
-                Log.w("ゲット2",Value2.toString());
+                    Log.w("Data",Data.toString());
+                    Log.w("UID",UID.toString());
+                }
 
             }
 
