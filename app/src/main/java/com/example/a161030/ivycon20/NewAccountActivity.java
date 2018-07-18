@@ -80,20 +80,25 @@ public class NewAccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                //EditeTextをStringに変換
-                num = number.getText().toString();
-                depar = department.getText().toString();
-                yer = year.getText().toString();
-                nam = name.getText().toString();
-                adress = mail.getText().toString();
-                pass = passwd.getText().toString();
-                pass_ag = passwd_again.getText().toString();
+                try {
+                    //EditeTextをStringに変換
+                    num = number.getText().toString();
+                    depar = department.getText().toString();
+                    yer = year.getText().toString();
+                    nam = name.getText().toString();
+                    adress = mail.getText().toString();
+                    pass = passwd.getText().toString();
+                    pass_ag = passwd_again.getText().toString();
 
                 if(pass.equals(pass_ag)) {
                     //アカウント作成関数
                     create(adress, pass);
                 }else {
                     Toast.makeText(NewAccountActivity.this, "パスワード打ち直し",Toast.LENGTH_SHORT).show();
+                }
+
+                }catch (Exception e){
+                    Toast.makeText(NewAccountActivity.this, "必要な項目を入力してください。", Toast.LENGTH_SHORT).show();
                 }
 
             }

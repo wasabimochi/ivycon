@@ -51,7 +51,7 @@
                 android:layout_marginTop="4dp"
                 android:ems="10"
                 android:inputType="numberSigned"
-                android:text="学籍番号を入力してください"
+                android:hint="学籍番号を入力してください"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="270dp" />
 
@@ -73,7 +73,7 @@
                 android:layout_marginTop="4dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="学科を入力してください"
+                android:hint="学科を入力してください"
                 tools:layout_editor_absoluteX="93dp"
                 tools:layout_editor_absoluteY="261dp" />
 
@@ -94,7 +94,7 @@
                 android:layout_marginTop="4dp"
                 android:ems="10"
                 android:inputType="numberSigned"
-                android:text="学年を入力してください"
+                android:hint="学年を入力してください"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="350dp" />
 
@@ -117,7 +117,7 @@
                 android:inputType="textPersonName"
                 tools:layout_editor_absoluteX="31dp"
                 tools:layout_editor_absoluteY="448dp"
-                tools:text="名前を入力してください" />
+                android:hint="名前を入力してください" />
 
             <TextView
                 android:id="@+id/Mail"
@@ -134,7 +134,7 @@
                 android:layout_marginTop="4dp"
                 android:ems="10"
                 android:inputType="textEmailAddress"
-                android:text="メールアドレスを入力してください" />
+                android:hint="メールアドレスを入力してください" />
 
             <TextView
                 android:id="@+id/Password"
