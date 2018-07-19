@@ -33,14 +33,6 @@ public class NewAccountActivity extends AppCompatActivity {
     //FirebaseUserオブジェクト作成
     FirebaseUser user;
 
-    //EditTextからデータを取得する変数
-    EditText number,department,year,name,mail,passwd,passwd_again;
-
-    //EditTextを代入する変数
-    Object num,depar,yer,nam;
-
-    String adress,pass,pass_ag;
-
     //ユーザーID取得変数
     String UID;
 
@@ -59,50 +51,95 @@ public class NewAccountActivity extends AppCompatActivity {
         //ユーザーの現在の状況を取得(ログインしているかなど)
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        //登録する項目を取得する
-        number = findViewById(R.id.new_number);
-        department = findViewById(R.id.new_department);
-        year = findViewById(R.id.new_year);
-        name = findViewById(R.id.new_name);
-        mail = findViewById(R.id.new_mail);
-        passwd = findViewById(R.id.new_password);
-        passwd_again = findViewById(R.id.password_again);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
         //Reference取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //
+
         findViewById(R.id.new_account_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //EditeTextをStringに変換
-                num = number.getText().toString();
-                depar = department.getText().toString();
-                yer = year.getText().toString();
-                nam = name.getText().toString();
-                adress = mail.getText().toString();
-                pass = passwd.getText().toString();
-                pass_ag = passwd_again.getText().toString();
-
-                if(pass.equals(pass_ag)) {
-                    //アカウント作成関数
-                    create(adress, pass);
-                }else {
-                    Toast.makeText(NewAccountActivity.this, "パスワード打ち直し",Toast.LENGTH_SHORT).show();
-                }
-
+                create();
             }
         });
     }
 
+
     //アカウント作成関数
-    public void create(String new_adress,String new_passwd){
-        mAuth.createUserWithEmailAndPassword(new_adress, new_passwd).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    public void create() {
+
+        //登録する項目を取得する
+        final EditText number = findViewById(R.id.new_number);
+        final EditText department = findViewById(R.id.new_department);
+        final EditText year = findViewById(R.id.new_year);
+        final EditText name = findViewById(R.id.new_name);
+        EditText mail = findViewById(R.id.new_mail);
+        EditText passwd = findViewById(R.id.new_password);
+        EditText passwd_again = findViewById(R.id.password_again);
+
+        //学籍番号がきちんと入力されていなければ
+        if (number.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "学籍番号を入力してください。", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        //学科がきちんと入力されていなければ
+        if (department.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "学科を入力してください。", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        //学年がきちんと入力されていなければ
+        if (year.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "学年を入力してください。", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        //名前がきちんと入力されていなければ
+        if (name.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "名前を入力してください。", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        //メールアドレスがきちんと入力されていなければ
+        if (mail.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "メールアドレスを入力してください。", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        //パスワードがきちんと入力されていなければ
+        if (passwd.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "パスワードを入力してください。", Toast.LENGTH_SHORT).show();
+
+            return;
+        }
+        //確認用パスワードがきちんと入力されていなければ
+        if (passwd_again.getText().length() == 0) {
+
+            //アラートを表示
+            Toast.makeText(NewAccountActivity.this, "確認用パスワードを入力してください。", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        
+        if(!passwd.getText().toString().equals(passwd_again.getText().toString())) {
+            //パスワードが一致していなければアラートを表示させる
+            Toast.makeText(NewAccountActivity.this, "パスワードが一致しませんでした。", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        
+        mAuth.createUserWithEmailAndPassword(mail.getText().toString(), passwd.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
@@ -110,21 +147,25 @@ public class NewAccountActivity extends AppCompatActivity {
                     FirebaseUser user = mAuth.getCurrentUser();
 
                     //UIDの取得
-                    UID = user.getUid().toString();
-
-                    //UIDのrefの取得
-                    mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID.toString()).getRef();
+                    assert user != null;
+                    UID = user.getUid();
 
                     //インスタンス取得
                     Map<String, Object> childUpdates = new HashMap<>();
 
+                    //UIDのrefの習得
+                    mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
+
                     //データ書き込みのイベント複数セッティング
-                    childUpdates.put("UID", UID);
-                    childUpdates.put("Num", num);
-                    childUpdates.put("Depar", depar);
-                    childUpdates.put("Year", yer);
-                    childUpdates.put("Name", nam);
-                    childUpdates.put("Profiel", "よろしくお願いします");
+
+                    //学籍番号
+                    childUpdates.put("Num", number.getText().toString());
+                    //学科
+                    childUpdates.put("Depar", department.getText().toString());
+                    //学年
+                    childUpdates.put("Year", year.getText().toString());
+                    //名前
+                    childUpdates.put("Name", name.getText().toString());
 
                     //イベント実行
                     mDatabase.updateChildren(childUpdates);
@@ -134,14 +175,10 @@ public class NewAccountActivity extends AppCompatActivity {
 
                     //画面遷移
                     startActivity(intent);
-
                 } else {
                     // サインインに失敗した場合は、ユーザーにメッセージを表示します。
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
-
-                    //メッセージ表示
                     Toast.makeText(NewAccountActivity.this, "認証に失敗しました。", Toast.LENGTH_SHORT).show();
-
                     Log.d(TAG,"作れなかった");
                 }
             }

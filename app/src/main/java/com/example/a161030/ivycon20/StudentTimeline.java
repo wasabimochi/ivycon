@@ -35,6 +35,7 @@ public class StudentTimeline extends AppCompatActivity {
     List<Map<String, String>> students = new ArrayList<Map<String, String>>();
 
     //レイアウト
+    ArrayAdapter<String> arrayAdapter;
     SimpleAdapter Adapter;
 
     //FirebaseAuthオブジェクト作成
