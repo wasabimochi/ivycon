@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,10 +32,10 @@ public class StudentTimeline extends AppCompatActivity {
     ListView ListView;
 
     //リスト
-    ArrayList<String> students = new ArrayList<String>();
+    List<Map<String, String>> students = new ArrayList<Map<String, String>>();
 
     //レイアウト
-    ArrayAdapter<String> arrayAdapter;
+    SimpleAdapter Adapter;
 
     //FirebaseAuthオブジェクト作成
     private FirebaseAuth mAuth;
@@ -80,20 +81,20 @@ public class StudentTimeline extends AppCompatActivity {
                     //UIDをとってくる
                     Object UID = postSnapshot.child("UID").getValue();
 
+                    Map<String, String> TimelineObject = new HashMap<String, String>();
+                    TimelineObject.put("UID", UID.toString());
+                    TimelineObject.put("Data", Data.toString());
                     //リストに追加
-                    students.add(Data.toString());
-
-                    Log.w("Data",Data.toString());
-                    Log.w("UID",UID.toString());
+                    students.add(TimelineObject);
 
                     //アダプターを作る
-                    ArrayAdapterCreat();
+                    AdapterCreat();
                 }
 
 
                 //arraylistに追加
                 //アダプターの設定
-                ListView.setAdapter(arrayAdapter);
+                ListView.setAdapter(Adapter);
 
             }
 
@@ -131,11 +132,15 @@ public class StudentTimeline extends AppCompatActivity {
         return hex_2_str.toUpperCase();
     }
 
-    private void ArrayAdapterCreat(){
+    private void AdapterCreat(){
         //arrayadapterの作成
         //レイアウトの指定
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,students);
-
+        //arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,students);
+        // リスト項目とListViewを対応付けるArrayAdapterを用意する
+        Adapter = new SimpleAdapter(this, students,
+                android.R.layout.simple_list_item_2,
+                new String[] { "UID", "Data" },
+                new int[] { android.R.id.text1, android.R.id.text2});
     }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
