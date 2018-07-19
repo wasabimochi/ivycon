@@ -128,56 +128,59 @@ public class NewAccountActivity extends AppCompatActivity {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "確認用パスワードを入力してください。", Toast.LENGTH_SHORT).show();
-
+            return;
+        }
+        
+        
+        if(!passwd.getText().toString().equals(passwd_again.getText().toString())) {
+            //パスワードが一致していなければアラートを表示させる
+            Toast.makeText(NewAccountActivity.this, "パスワードが一致しませんでした。", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(passwd.getText().toString().equals(passwd_again.getText().toString())) {//パスワードが一致していればユーザーを作成し、データベースにデータを追加する
-            mAuth.createUserWithEmailAndPassword(mail.getText().toString(), passwd.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // ログインに成功し、ログインしたユーザーの情報でUIを更新します
-                        FirebaseUser user = mAuth.getCurrentUser();
+        
+        mAuth.createUserWithEmailAndPassword(mail.getText().toString(), passwd.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    // ログインに成功し、ログインしたユーザーの情報でUIを更新します
+                    FirebaseUser user = mAuth.getCurrentUser();
 
-                        //UIDの取得
-                        assert user != null;
-                        UID = user.getUid();
+                    //UIDの取得
+                    assert user != null;
+                    UID = user.getUid();
 
-                        //インスタンス取得
-                        Map<String, Object> childUpdates = new HashMap<>();
+                    //インスタンス取得
+                    Map<String, Object> childUpdates = new HashMap<>();
 
-                        //UIDのrefの習得
-                        mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
+                    //UIDのrefの習得
+                    mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
 
-                        //データ書き込みのイベント複数セッティング
-                        //学籍番号
-                        childUpdates.put("Num", number.getText().toString());
-                        //学科
-                        childUpdates.put("Depar", department.getText().toString());
-                        //学年
-                        childUpdates.put("Year", year.getText().toString());
-                        //名前
-                        childUpdates.put("Name", name.getText().toString());
+                    //データ書き込みのイベント複数セッティング
+                    //学籍番号
+                    childUpdates.put("Num", number.getText().toString());
+                    //学科
+                    childUpdates.put("Depar", department.getText().toString());
+                    //学年
+                    childUpdates.put("Year", year.getText().toString());
+                    //名前
+                    childUpdates.put("Name", name.getText().toString());
 
-                        //イベント実行
-                        mDatabase.updateChildren(childUpdates);
+                    //イベント実行
+                    mDatabase.updateChildren(childUpdates);
 
-                        //インテントの作成
-                        Intent intent = new Intent(getApplication(), StudentTimeline.class);
+                    //インテントの作成
+                    Intent intent = new Intent(getApplication(), StudentTimeline.class);
 
-                        //画面遷移
-                        startActivity(intent);
-                    } else {
-                        // サインインに失敗した場合は、ユーザーにメッセージを表示します。
-                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                        Toast.makeText(NewAccountActivity.this, "認証に失敗しました。", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG,"作れなかった");
-                    }
+                    //画面遷移
+                    startActivity(intent);
+                } else {
+                    // サインインに失敗した場合は、ユーザーにメッセージを表示します。
+                    Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                    Toast.makeText(NewAccountActivity.this, "認証に失敗しました。", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"作れなかった");
                 }
-            });
-        }else{//パスワードが一致していなければアラートを表示させる
-            Toast.makeText(NewAccountActivity.this, "パスワードが一致しませんでした。", Toast.LENGTH_SHORT).show();
-        }
+            }
+        });
     }
 }
