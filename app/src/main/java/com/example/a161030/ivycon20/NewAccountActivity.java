@@ -124,6 +124,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     childUpdates.put("Depar", depar);
                     childUpdates.put("Year", yer);
                     childUpdates.put("Name", nam);
+                    childUpdates.put("Profiel", "よろしくお願いします");
 
                     //イベント実行
                     mDatabase.updateChildren(childUpdates);

@@ -2,7 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a161030.ivycon20">
 
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!--特権の追加-->
+    <!--Bluetoothのパーミッション-->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <!--位置情報のパーミッション-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+
+    <!--4.0以上じゃないとできないおまじない-->
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+    <!--インターネット-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--ネットへのアクセス-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--ストレージの読み込み許可-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

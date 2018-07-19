@@ -27,10 +27,14 @@ import java.util.Map;
 
 public class StudentTimeline extends AppCompatActivity {
 
+    //リストビュー
     ListView ListView;
 
-    //String[] students = {"hirose","takakura","kugimiya","yoshida"};
+    //リスト
     ArrayList<String> students = new ArrayList<String>();
+
+    //レイアウト
+    ArrayAdapter<String> arrayAdapter;
 
     //FirebaseAuthオブジェクト作成
     private FirebaseAuth mAuth;
@@ -58,9 +62,13 @@ public class StudentTimeline extends AppCompatActivity {
 
         BluetoothLeScanner mBluetoothLeScanner;
 
+        //Databaseへの参照取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        //FireBaseのイベント。最後に走る
+        //Listを作る
+        ListView = (ListView) findViewById(R.id.ListView);
+
+        //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
@@ -72,9 +80,20 @@ public class StudentTimeline extends AppCompatActivity {
                     //UIDをとってくる
                     Object UID = postSnapshot.child("UID").getValue();
 
+                    //リストに追加
+                    students.add(Data.toString());
+
                     Log.w("Data",Data.toString());
                     Log.w("UID",UID.toString());
+
+                    //アダプターを作る
+                    ArrayAdapterCreat();
                 }
+
+
+                //arraylistに追加
+                //アダプターの設定
+                ListView.setAdapter(arrayAdapter);
 
             }
 
@@ -97,24 +116,11 @@ public class StudentTimeline extends AppCompatActivity {
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         //mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
-        students.add("hirose");
-        students.add("kugimiya");
-        students.add("takakura");
-        students.add("yoshida");
 
-        //Listを作る
-        ListView = (ListView) findViewById(R.id.ListView);
 
-        //arrayadapterの作成
-        //レイアウトの指定
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,students);
 
-        //アダプターの設定
-        ListView.setAdapter(arrayAdapter);
 
-        students.add("fujita");
 
-        //arraylistに追加
 
     }
 
@@ -125,6 +131,12 @@ public class StudentTimeline extends AppCompatActivity {
         return hex_2_str.toUpperCase();
     }
 
+    private void ArrayAdapterCreat(){
+        //arrayadapterの作成
+        //レイアウトの指定
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,students);
+
+    }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
