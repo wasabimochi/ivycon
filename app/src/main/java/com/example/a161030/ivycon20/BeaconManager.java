@@ -11,27 +11,34 @@ import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
+import android.content.Intent;
 
-public class BeaconManager extends Application {
+
+public class BeaconManager extends AppCompatActivity {
 
     //Logを使う時に必要
     private final static String TAG = StudentTimeline.class.getSimpleName();
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private static final String UUID = "48534442-4C45-4144-80C0-180000000000";
     private static String uuid = null;
-    public static boolean Inivy = false; //ivyにいるか
+    static boolean InIvy;
+    StudentTimeline studentTimeline = new StudentTimeline();
 
-    protected boolean onCreate(Bundle savedInstanceState) {
-        super.onCreate();
-        BluetoothLeScanner mBluetoothLeScanner;
-
+    //ビーコンの捜査
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //頭にappthemaつけないとスプラッシュのまんまになるので注意
+        setTheme(R.style.AppTheme);
+        setContentView(R.layout.beacon_manager);
         final BluetoothManager bluetoothManager =
                 (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
         assert bluetoothManager != null;
         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
         mBluetoothAdapter.startLeScan(mLeScanCallback);
-        return Inivy;
+        Log.d(TAG, "in");
     }
 
     //intデータを 2桁16進数に変換するメソッド
@@ -41,10 +48,11 @@ public class BeaconManager extends Application {
         return hex_2_str.toUpperCase();
     }
 
-    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
+    public BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
             // デバイスが検出される度に呼び出されます。
+            Log.d(TAG, "scanning");
             if (scanRecord.length > 30) {
                 uuid = null;
                 Log.d(TAG, "検索中");
@@ -79,10 +87,13 @@ public class BeaconManager extends Application {
 
                     //ivyのビーコンと一致した場合
                     if (UUID.equals(uuid)) {
-                        Inivy = true;
+                        InIvy = true;
                         Log.d(TAG, "ようこそ！");
-                        //uuid = "48534442-4C45-4144-80C0-18FFFFFFFFFF";
                         Log.d(TAG, "きたああああああ！ UUID" + uuid + "major" + major + "minor" + minor);
+                        Intent intent = new Intent();
+                        intent.putExtra("inIvy",1);
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
 
                     if (!(UUID.equals(uuid))) {
