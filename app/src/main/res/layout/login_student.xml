@@ -38,7 +38,8 @@
         android:inputType="textPersonName"
         android:text="taka@gmail.com"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="メールアドレスを入力してください"/>
 
     <Button
 
@@ -107,6 +108,7 @@
         android:inputType="textPassword"
         android:text="abcde123"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="パスワードを入力してください"/>
 
 </android.support.constraint.ConstraintLayout>
