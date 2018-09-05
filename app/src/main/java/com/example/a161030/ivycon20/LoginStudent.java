@@ -76,7 +76,7 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
 
     //管理者ログインのイベント
     public void TeacherDepartmentMove(View view){
-        Intent intent = new Intent(getApplication(), TeacherDepartment.class);    //インテントの作成
+        Intent intent = new Intent(getApplication(), LoginTeacher.class);    //インテントの作成
         startActivity(intent);  //画面遷移
     }
 

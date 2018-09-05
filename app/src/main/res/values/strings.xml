@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ivycon2.0</string>
     <string name="ivycon">ListBasic</string>
+    <string name="abcde123">abcde123</string>
+    <string name="kei_gmail_com">kei@gmail.com</string>
     <string-array name="spice">
     <item>1年</item>
     <item>2年</item>
