@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,12 +16,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,17 +37,22 @@ public class StudentTimeline extends AppCompatActivity {
     ListView ListView;
 
     //リスト
-    List<Map<String, String>> students = new ArrayList<Map<String, String>>();
+    ArrayList<StudentListItem> listItems = new ArrayList<>();
 
     //レイアウト
     ArrayAdapter<String> arrayAdapter;
-    SimpleAdapter Adapter;
+
+    //オリジナルのアダプター
+    StudentListAdapter Adapter;
 
     //FirebaseAuthオブジェクト作成
     private FirebaseAuth mAuth;
 
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
+
+    //ストレージ
+    private StorageReference storageRef;
 
     //Logを使う時に必要
     private final static String TAG = StudentTimeline.class.getSimpleName();
@@ -77,26 +87,57 @@ public class StudentTimeline extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot: dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
+
                     //Dataをとってくる
                     Object Data = postSnapshot.child("Data").getValue();
+
                     //UIDをとってくる
                     Object UID = postSnapshot.child("UID").getValue();
 
-                    Map<String, String> TimelineObject = new HashMap<String, String>();
-                    TimelineObject.put("UID", UID.toString());
-                    TimelineObject.put("Data", Data.toString());
-                    //リストに追加
-                    students.add(TimelineObject);
+                    //UIDを元に名まえを取ってくる
+                    Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
-                    //アダプターを作る
-                    AdapterCreat();
+                    /*
+                    Bitmap Thumbnail;
+
+                    //ストレージへの参照
+                    storageRef = storage.getReference();
+
+                    //画像の参照取得
+                    StorageReference spaceRef = storageRef.child("smile.png");
+
+                    final long ONE_MEGABYTE = 1024 * 1024;
+                    spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            // Data for "images/island.jpg" is returns, use this as needed
+                            Bitmap Thumbnail = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle any errors
+                        }
+                    });
+*/
+                    //画像のビットマップ
+                    Bitmap Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+                    //リストアイテム作成
+                    StudentListItem TimelineObject = new StudentListItem(Thumbnail, StudentName.toString() + Data.toString());
+
+                    //リストに追加
+                    listItems.add(TimelineObject);
+
+
                 }
 
+                //呼出し
+                OriginalAdapter();
 
-                //arraylistに追加
-                //アダプターの設定
+                //リストビュー作成
                 ListView.setAdapter(Adapter);
-
             }
 
             @Override
@@ -126,6 +167,13 @@ public class StudentTimeline extends AppCompatActivity {
 
     }
 
+    //オリジナルのアダプターを作る
+    private void OriginalAdapter(){
+        //arraylistに追加
+        //アダプターの設定
+        Adapter = new StudentListAdapter(this, R.layout.student_item, listItems);
+    }
+
     //intデータを 2桁16進数に変換するメソッド
     public String IntToHex2(int i) {
         char hex_2[] = {Character.forDigit((i >> 4) & 0x0f, 16), Character.forDigit(i & 0x0f, 16)};
@@ -133,16 +181,6 @@ public class StudentTimeline extends AppCompatActivity {
         return hex_2_str.toUpperCase();
     }
 
-    private void AdapterCreat(){
-        //arrayadapterの作成
-        //レイアウトの指定
-        //arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,students);
-        // リスト項目とListViewを対応付けるArrayAdapterを用意する
-        Adapter = new SimpleAdapter(this, students,
-                android.R.layout.simple_list_item_2,
-                new String[] { "UID", "Data" },
-                new int[] { android.R.id.text1, android.R.id.text2});
-    }
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
