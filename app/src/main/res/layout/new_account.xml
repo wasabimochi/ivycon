@@ -65,17 +65,12 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="200dp" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/new_department"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="4dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="学科を入力してください"
-                tools:layout_editor_absoluteX="93dp"
-                tools:layout_editor_absoluteY="261dp" />
+                android:entries="@array/arrays"
+                android:spinnerMode="dialog" />
 
             <TextView
                 android:id="@+id/Grade"
@@ -86,17 +81,12 @@
                 tools:layout_editor_absoluteX="368dp"
                 tools:layout_editor_absoluteY="211dp" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/new_year"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="4dp"
-                android:ems="10"
-                android:inputType="numberSigned"
-                android:hint="学年を入力してください"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="350dp" />
+                android:entries="@array/spice"
+                android:spinnerMode="dialog" />
 
             <TextView
                 android:id="@+id/Name"
