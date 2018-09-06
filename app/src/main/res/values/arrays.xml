@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="arrays">
+        <item>医療情報学科</item>
+        <item>インターネット学科</item>
+        <item>CGデザイン学科</item>
+        <item>3DCADクリエイト学科</item>
+        <item>オフィスビジネス学科</item>
+        <item>情報処理学科</item>
+        <item>公務員ビジネス学科</item>
+        <item>医療ビジネス学科</item>
+        <item>モバイルシステムクリエイト学科</item>
+    </string-array>
+</resources>

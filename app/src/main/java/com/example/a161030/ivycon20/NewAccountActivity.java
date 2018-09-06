@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,9 +15,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +40,8 @@ public class NewAccountActivity extends AppCompatActivity {
 
     //ユーザーID取得変数
     String UID;
+
+    Object Depar;
 
     //Logを使う時に必要
     private final static String TAG = NewAccountActivity.class.getSimpleName();
@@ -68,8 +75,17 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //登録する項目を取得する
         final EditText number = findViewById(R.id.new_number);
-        final EditText department = findViewById(R.id.new_department);
-        final EditText year = findViewById(R.id.new_year);
+        // Spinnerオブジェクトを取得
+        Spinner department = (Spinner)findViewById(R.id.new_department);
+        // 選択されているアイテムのIndexを取得
+        int department_idx = department.getSelectedItemPosition();
+        // 選択されているアイテムを取得
+        String department_item = (String)department.getSelectedItem();
+        Spinner year = (Spinner)findViewById(R.id.new_year);
+        // 選択されているアイテムのIndexを取得
+        final int year_idx = department.getSelectedItemPosition();
+        // 選択されているアイテムを取得
+        String year_item = (String)department.getSelectedItem();
         final EditText name = findViewById(R.id.new_name);
         EditText mail = findViewById(R.id.new_mail);
         EditText passwd = findViewById(R.id.new_password);
@@ -83,22 +99,49 @@ public class NewAccountActivity extends AppCompatActivity {
 
             return;
         }
-        //学科がきちんと入力されていなければ
-        if (department.getText().length() == 0) {
-
-            //アラートを表示
-            Toast.makeText(NewAccountActivity.this, "学科を入力してください。", Toast.LENGTH_SHORT).show();
-
-            return;
+        //度の学科が選択されたか
+        if (department_idx == 0) {
+            department_item = "-LGhFa150qB3TQHMa5z7";
+        }else if(department_idx == 1){
+            department_item ="-LGhFWKgRIPC6jVByYip";
+        }else if(department_idx == 2){
+            department_item = "-LGhFRm-6N8LgqM9WU9V";
+        }else if(department_idx == 3){
+            department_item = "-LGhFIYgqwB2vnnOUBG8";
+        }else if(department_idx ==4){
+            department_item = "-LGhFbSuk3SdtaeE8CI5";
+        }else if(department_idx == 5){
+            department_item = "-LGhFXiLSgc8ga6gesSS";
+        }else if(department_idx == 6){
+            department_item = "-LGhFTfSP-dPpDOqZ_Gh";
+        }else if(department_idx == 7){
+            department_item = "-LGhFZjy3ZRKG_59GxWA";
+        }else if(department_idx == 8){
+            department_item = "-LGhFVJSogdEShwcrSlP";
         }
-        //学年がきちんと入力されていなければ
-        if (year.getText().length() == 0) {
 
-            //アラートを表示
-            Toast.makeText(NewAccountActivity.this, "学年を入力してください。", Toast.LENGTH_SHORT).show();
+        //FireBaseのイベント
+        final String finalDepartment_item1 = department_item;
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Deparをとってくる
+                Depar = dataSnapshot.child("Ivycon2").child("Deper").child(finalDepartment_item1).getValue();
+                Log.w("きたああああああああああああああああああ",Depar.toString());
+            }
 
-            return;
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("エラー", databaseError.toException());
+            }
+        });
+
+        //現在のカレンダー取得
+        Calendar calendar = Calendar.getInstance();
+        //年を取得
+        final int years = calendar.get(Calendar.YEAR);
+
         //名前がきちんと入力されていなければ
         if (name.getText().length() == 0) {
 
@@ -138,7 +181,8 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
 
-        
+
+        final String finalDepartment_item = department_item;
         mAuth.createUserWithEmailAndPassword(mail.getText().toString(), passwd.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -161,9 +205,9 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学籍番号
                     childUpdates.put("Num", number.getText().toString());
                     //学科
-                    childUpdates.put("Depar", department.getText().toString());
-                    //学年
-                    childUpdates.put("Year", year.getText().toString());
+                    childUpdates.put("Depar", Depar.toString());
+                    //入学年
+                    childUpdates.put("Year", String.valueOf(years + year_idx));
                     //名前
                     childUpdates.put("Name", name.getText().toString());
 
