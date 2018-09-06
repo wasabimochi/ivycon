@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
@@ -34,16 +35,16 @@ import java.util.Map;
 public class StudentTimeline extends AppCompatActivity {
 
     //リストビュー
-    ListView ListView;
+    private ListView ListView;
 
     //リスト
-    ArrayList<StudentListItem> listItems = new ArrayList<>();
+    private ArrayList<StudentListItem> listItems = new ArrayList<>();
 
     //レイアウト
-    ArrayAdapter<String> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;
 
     //オリジナルのアダプター
-    StudentListAdapter Adapter;
+    private StudentListAdapter Adapter;
 
     //FirebaseAuthオブジェクト作成
     private FirebaseAuth mAuth;
@@ -51,8 +52,26 @@ public class StudentTimeline extends AppCompatActivity {
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
 
+    //FireBaseストレージ
+    private FirebaseStorage storage;
+
     //ストレージ
     private StorageReference storageRef;
+
+    //画像の参照取得
+    private StorageReference spaceRef;
+
+    //サムネイルのビットマップ
+    private Bitmap Thumbnail;
+
+    //入室リスト配列
+    private ArrayList<String> inDate = new ArrayList<>();
+
+    //生徒のリスト配列
+    private ArrayList<String> sName = new ArrayList<>();
+
+    //カウント変数
+    private int Count = 0;
 
     //Logを使う時に必要
     private final static String TAG = StudentTimeline.class.getSimpleName();
@@ -77,16 +96,24 @@ public class StudentTimeline extends AppCompatActivity {
         //Databaseへの参照取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        //FireBaseストレージへのアクセスインスタンス
+        storage = FirebaseStorage.getInstance();
+
+        //ストレージへの参照
+        storageRef = storage.getReference();
+
         //Listを作る
         ListView = (ListView) findViewById(R.id.ListView);
 
+
+        ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
         //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
-                for (DataSnapshot postSnapshot: dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
 
                     //Dataをとってくる
                     Object Data = postSnapshot.child("Data").getValue();
@@ -97,55 +124,80 @@ public class StudentTimeline extends AppCompatActivity {
                     //UIDを元に名まえを取ってくる
                     Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
-                    /*
-                    Bitmap Thumbnail;
+                    //リストに格納
+                    sName.add(StudentName.toString());
+                    inDate.add(Data.toString());
 
-                    //ストレージへの参照
-                    storageRef = storage.getReference();
-
+                    ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                     //画像の参照取得
-                    StorageReference spaceRef = storageRef.child("smile.png");
+                    spaceRef = storageRef.child(/*"Image/Icon/" + UID.toString() + ".jpeg"*/"smile.png");
 
+                    //メモリ
                     final long ONE_MEGABYTE = 1024 * 1024;
+
+                    //ストレージイベント
                     spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
-                            // Data for "images/island.jpg" is returns, use this as needed
-                            Bitmap Thumbnail = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                            //サムネイル画像取得
+                            Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
+                            //取得した画像をサムネイル用の大きさにリサイズ
+                            Thumbnail = Bitmap.createScaledBitmap(Thumbnail, 70, 70, false);
+
+                            //リストアイテム作成
+                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count));
+
+                            //リストに追加
+                            listItems.add(TimelineObject);
+
+                            Count++;
+
+                            if(Count == sName.size()) {
+                                //呼出し
+                                OriginalAdapter();
+
+                                //リストビュー作成
+                                ListView.setAdapter(Adapter);
+
+                            }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
                             // Handle any errors
+                            //デフォルト画像のビットマップ
+                            Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+                            //取得した画像をサムネイル用の大きさにリサイズ
+                            Thumbnail = Bitmap.createScaledBitmap(Thumbnail, 70, 70, false);
+
+                            //リストアイテム作成
+                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count));
+
+                            //リストに追加
+                            listItems.add(TimelineObject);
+
+                            Count++;
+
+                            if(Count == sName.size()) {
+                                //呼出し
+                                OriginalAdapter();
+
+                                //リストビュー作成
+                                ListView.setAdapter(Adapter);
+                            }
                         }
                     });
-*/
-                    //画像のビットマップ
-                    Bitmap Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-                    //リストアイテム作成
-                    StudentListItem TimelineObject = new StudentListItem(Thumbnail, StudentName.toString() + Data.toString());
-
-                    //リストに追加
-                    listItems.add(TimelineObject);
-
-
                 }
-
-                //呼出し
-                OriginalAdapter();
-
-                //リストビュー作成
-                ListView.setAdapter(Adapter);
             }
-
             @Override
             //データがとりに行けなかった場合
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w("エラー", databaseError.toException());
             }
         });
+
 
         //バージョンの確認
         if (this.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED) {
@@ -160,11 +212,6 @@ public class StudentTimeline extends AppCompatActivity {
         //mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
 
-
-
-
-
-
     }
 
     //オリジナルのアダプターを作る
@@ -173,6 +220,7 @@ public class StudentTimeline extends AppCompatActivity {
         //アダプターの設定
         Adapter = new StudentListAdapter(this, R.layout.student_item, listItems);
     }
+
 
     //intデータを 2桁16進数に変換するメソッド
     public String IntToHex2(int i) {
@@ -188,7 +236,7 @@ public class StudentTimeline extends AppCompatActivity {
             // デバイスが検出される度に呼び出されます。
             if (scanRecord.length > 30) {
                 uuid = null;
-                Log.d(TAG,"検索中");
+                //Log.d(TAG,"検索中");
 
                 //iBeacon の場合 6 byte 目から、 9 byte 目はこの値に固定されている。
                 if ((scanRecord[5] == (byte) 0x4c) && (scanRecord[6] == (byte) 0x00) &&
@@ -221,13 +269,13 @@ public class StudentTimeline extends AppCompatActivity {
                     //ivyのビーコンと一致した場合
                     if (UUID.equals(uuid)) {
                         Inivy = true;
-                        Log.d(TAG,"ようこそ！");
+                        //Log.d(TAG,"ようこそ！");
                         //uuid = "48534442-4C45-4144-80C0-18FFFFFFFFFF";
-                        Log.d(TAG,"きたああああああ！ UUID" + uuid + "major" + major + "minor" + minor);
+                        //Log.d(TAG,"きたああああああ！ UUID" + uuid + "major" + major + "minor" + minor);
                     }
 
                     if (!(UUID.equals(uuid))) {
-                        Log.d(TAG,"やったぜ！");
+                        //Log.d(TAG,"やったぜ！");
                     }
                 }
             }
