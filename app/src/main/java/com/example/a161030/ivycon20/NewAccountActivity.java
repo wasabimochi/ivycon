@@ -207,7 +207,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学科
                     childUpdates.put("Depar", Depar.toString());
                     //入学年
-                    childUpdates.put("Year", String.valueOf(years + year_idx));
+                    childUpdates.put("Year", String.valueOf(years - year_idx));
                     //名前
                     childUpdates.put("Name", name.getText().toString());
 
