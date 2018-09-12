@@ -44,7 +44,12 @@ public class LoginTeacher extends AppCompatActivity {
         findViewById(R.id.teacher_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                //login();
+                //インテントの作成
+                Intent intent = new Intent(getApplication(), StudentMypageEdit.class);
+
+                //画面遷移
+                startActivity(intent);
             }
         });
     }
