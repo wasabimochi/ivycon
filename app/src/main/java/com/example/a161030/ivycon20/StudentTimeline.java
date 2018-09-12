@@ -10,8 +10,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -70,6 +73,9 @@ public class StudentTimeline extends AppCompatActivity {
     //生徒のリスト配列
     private ArrayList<String> sName = new ArrayList<>();
 
+    //生徒のUIDのリスト配列
+    private ArrayList<String> sUID = new ArrayList<>();
+
     //カウント変数
     private int Count = 0;
 
@@ -105,6 +111,8 @@ public class StudentTimeline extends AppCompatActivity {
         //Listを作る
         ListView = (ListView) findViewById(R.id.ListView);
 
+        // タップ時のイベントを追加
+        ListView.setOnItemClickListener(onItemClickListener);
 
         ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
         //FireBaseのイベント
@@ -125,6 +133,7 @@ public class StudentTimeline extends AppCompatActivity {
                     Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
                     //リストに格納
+                    sUID.add(UID.toString());
                     sName.add(StudentName.toString());
                     inDate.add(Data.toString());
 
@@ -146,7 +155,7 @@ public class StudentTimeline extends AppCompatActivity {
                             Thumbnail = Bitmap.createScaledBitmap(Thumbnail, 70, 70, false);
 
                             //リストアイテム作成
-                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count));
+                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
 
                             //リストに追加
                             listItems.add(TimelineObject);
@@ -173,7 +182,7 @@ public class StudentTimeline extends AppCompatActivity {
                             Thumbnail = Bitmap.createScaledBitmap(Thumbnail, 70, 70, false);
 
                             //リストアイテム作成
-                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count));
+                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count),  sUID.get(Count));
 
                             //リストに追加
                             listItems.add(TimelineObject);
@@ -229,6 +238,29 @@ public class StudentTimeline extends AppCompatActivity {
         return hex_2_str.toUpperCase();
     }
 
+    //タップイベント
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // タップしたアイテムの取得
+            ListView listView = (ListView)parent;
+
+            // SampleListItemにキャスト
+            StudentListItem item = (StudentListItem)listView.getItemAtPosition(position);
+
+            //ダイアログ
+            AlertDialog.Builder builder = new AlertDialog.Builder(StudentTimeline.this);
+
+            //下から何番めをタップしたか
+            builder.setTitle("Tap No. " + String.valueOf(position));
+
+            //タップしたところのUIDを取る
+            builder.setMessage(item.getUID());
+
+            //表示
+            builder.show();
+        }
+    };
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override

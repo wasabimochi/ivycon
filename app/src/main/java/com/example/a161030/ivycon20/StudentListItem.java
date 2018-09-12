@@ -6,6 +6,7 @@ public class StudentListItem {
 
     private Bitmap mThumbnail = null;
     private String mTitle = null;
+    private String mUID = null;
 
     /**
      * 空のコンストラクタ
@@ -16,10 +17,12 @@ public class StudentListItem {
      * コンストラクタ
      * @param thumbnail サムネイル画像
      * @param title タイトル
+     * @param UID UID
      */
-    public StudentListItem(Bitmap thumbnail, String title) {
+    public StudentListItem(Bitmap thumbnail, String title, String UID) {
         mThumbnail = thumbnail;
         mTitle = title;
+        mUID = UID;
     }
 
     /**
@@ -52,5 +55,14 @@ public class StudentListItem {
      */
     public String getTitle() {
         return mTitle;
+    }
+
+
+    /**
+     * UIDを取得
+     * @return UID
+     */
+    public String getUID() {
+        return mUID;
     }
 }
