@@ -5,14 +5,17 @@
 
         <item
             android:icon="@android:drawable/ic_menu_myplaces"
+            android:id="@+id/myPage"
             android:title="マイページ" />
     </group>
     <item
         android:title="その他">
         <menu android:checkableBehavior="single">
             <item
+                android:id="@+id/logout"
                 android:title="ログアウト" />
             <item
+                android:id="@+id/taikai"
                 android:title="退会" />
 
         </menu>

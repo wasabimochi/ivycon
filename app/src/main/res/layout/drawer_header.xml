@@ -4,31 +4,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:background="@color/primary_dark_material_light">
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="103dp"
-        android:layout_height="76dp"
-        android:layout_marginTop="13dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="98dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            app:srcCompat="@mipmap/ic_launcher_round" />
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
+
+    <!--
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+android:layout_marginTop="200dp"
+-->
+<!--
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="143dp"
-        android:layout_height="72dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="19dp"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+-->
+
+<!--        android:layout_marginEnd="16dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:gravity="center_horizontal|center_vertical"
         android:text="MyName"
         android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        app:layout_constraintHorizontal_bias="0.495" -->

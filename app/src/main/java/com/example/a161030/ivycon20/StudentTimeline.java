@@ -8,8 +8,11 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -26,7 +29,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StudentTimeline extends AppCompatActivity {
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.support.v4.view.GravityCompat;
+
+
+public class StudentTimeline extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     //リストビュー
     ListView ListView;
@@ -58,6 +68,10 @@ public class StudentTimeline extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
+
+        //サイドバーのリスナーを作成
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
 
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
@@ -92,7 +106,6 @@ public class StudentTimeline extends AppCompatActivity {
                     AdapterCreat();
                 }
 
-
                 //arraylistに追加
                 //アダプターの設定
                 ListView.setAdapter(Adapter);
@@ -117,12 +130,6 @@ public class StudentTimeline extends AppCompatActivity {
         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         //mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
-
-
-
-
-
-
 
     }
 
@@ -207,4 +214,35 @@ public class StudentTimeline extends AppCompatActivity {
         }
     };
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.myPage:
+                Log.d(TAG, "Settings Selected!");
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch(item.getItemId()){
+            case R.id.myPage:
+                Log.d(TAG, "マイページ");
+                break;
+            case R.id.logout:
+                Log.d(TAG, "ログアウト");
+                break;
+            case R.id.taikai:
+                Log.d(TAG, "退会");
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

@@ -82,14 +82,15 @@
     <EditText
         android:id="@+id/profile_edit"
         android:layout_width="286dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="104dp"
+        android:layout_height="166dp"
+        android:layout_marginBottom="56dp"
         android:layout_marginEnd="49dp"
         android:layout_marginStart="49dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/decision_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
