@@ -120,14 +120,22 @@ public class StudentTimeline extends AppCompatActivity {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //リストビューとリスト中身の削除
+                if(sUID.size() > 0){
+                    listItems.clear();
+                    sUID.clear();
+                    sName.clear();
+                    inDate.clear();
+                    Count = 0;
+                }
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
 
-                    //Dataをとってくる
-                    Object Data = postSnapshot.child("Data").getValue();
-
                     //UIDをとってくる
                     Object UID = postSnapshot.child("UID").getValue();
+
+                    //Dataをとってくる
+                    Object Data = postSnapshot.child("Data").getValue();
 
                     //UIDを元に名まえを取ってくる
                     Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
@@ -170,6 +178,7 @@ public class StudentTimeline extends AppCompatActivity {
                                 ListView.setAdapter(Adapter);
 
                             }
+                            Log.d("画像取りに行くよ！！！！","@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
