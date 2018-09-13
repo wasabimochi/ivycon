@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <!--一番最初に出す画面-->
-        <activity android:name=".LoginStudent" android:theme="@style/SplashTheme"> <!--android:theme="@style/SplashTheme"
+        <activity android:name=".LoginStudent" android:theme="@style/SplashTheme" android:screenOrientation="portrait"> <!--android:theme="@style/SplashTheme"
                                                                                             に書き換えるとロード画面が自動でスプラッシュが標示される-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

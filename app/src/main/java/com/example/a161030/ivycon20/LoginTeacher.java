@@ -44,12 +44,7 @@ public class LoginTeacher extends AppCompatActivity {
         findViewById(R.id.teacher_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //login();
-                //インテントの作成
-                Intent intent = new Intent(getApplication(), StudentMypageEdit.class);
-
-                //画面遷移
-                startActivity(intent);
+                login();
             }
         });
     }
@@ -69,7 +64,7 @@ public class LoginTeacher extends AppCompatActivity {
                     if (task.isSuccessful()) {  //ログインに成功し、ログインしたユーザーの情報でUIを更新
                         // Log.d(TAG, "ログインうまくいった");
                         user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(getApplication(), TeacherDepartment.class);    //インテントの作成
+                        Intent intent = new Intent(getApplication(), StudentMypageEdit.class);    //インテントの作成
                         startActivity(intent);  //画面遷移
                     } else {                       //サインインに失敗した場合は、ユーザーにメッセージを表示
                         Log.w(TAG, "ログインダメでした", task.getException());
