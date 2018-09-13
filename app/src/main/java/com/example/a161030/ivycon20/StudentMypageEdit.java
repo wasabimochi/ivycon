@@ -78,6 +78,7 @@ public class StudentMypageEdit extends AppCompatActivity {
         //ストレージへの参照
         storageRef = storage.getReference();
 
+        //選択した写真を表示させる
         imgView = (ImageView)findViewById(R.id.icon_edit);
 
         // ログインに成功し、ログインしたユーザーの情報でUIを更新します
