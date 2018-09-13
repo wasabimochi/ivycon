@@ -5,19 +5,18 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,7 +31,6 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class StudentTimeline extends AppCompatActivity {
@@ -147,7 +145,7 @@ public class StudentTimeline extends AppCompatActivity {
 
                     ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                     //画像の参照取得
-                    spaceRef = storageRef.child(/*"Image/Icon/" + UID.toString() + ".jpeg"*/"smile.png");
+                    spaceRef = storageRef.child("image/Icon/" + UID.toString() + "_icon.jpeg");
 
                     //メモリ
                     final long ONE_MEGABYTE = 1024 * 1024;
@@ -158,9 +156,6 @@ public class StudentTimeline extends AppCompatActivity {
                         public void onSuccess(byte[] bytes) {
                             //サムネイル画像取得
                             Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                            //取得した画像をサムネイル用の大きさにリサイズ
-                            Thumbnail = Bitmap.createScaledBitmap(Thumbnail, 70, 70, false);
 
                             //リストアイテム作成
                             StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
@@ -186,9 +181,6 @@ public class StudentTimeline extends AppCompatActivity {
                             // Handle any errors
                             //デフォルト画像のビットマップ
                             Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-                            //取得した画像をサムネイル用の大きさにリサイズ
-                            Thumbnail = Bitmap.createScaledBitmap(Thumbnail, 70, 70, false);
 
                             //リストアイテム作成
                             StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count),  sUID.get(Count));
@@ -257,17 +249,17 @@ public class StudentTimeline extends AppCompatActivity {
             // SampleListItemにキャスト
             StudentListItem item = (StudentListItem)listView.getItemAtPosition(position);
 
-            //ダイアログ
-            AlertDialog.Builder builder = new AlertDialog.Builder(StudentTimeline.this);
+            //グローバル変数クラス
+            UtilCommon common = (UtilCommon)getApplication();
 
-            //下から何番めをタップしたか
-            builder.setTitle("Tap No. " + String.valueOf(position));
+            //タップしたところのUIDを取ってグローバルに設定
+            common.setothersUID(item.getUID());
 
-            //タップしたところのUIDを取る
-            builder.setMessage(item.getUID());
+            //インテントの作成
+            Intent intent = new Intent(getApplication(), StudentMypage.class);
 
-            //表示
-            builder.show();
+            //画面遷移
+            startActivity(intent);
         }
     };
 
