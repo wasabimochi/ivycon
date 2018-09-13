@@ -5,13 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class StudentMypage extends AppCompatActivity {
 
@@ -24,6 +29,16 @@ public class StudentMypage extends AppCompatActivity {
     //Logを使う時に必要
     private final static String TAG = MainActivity.class.getSimpleName();
 
+    //FireBaseストレージ
+    private FirebaseStorage storage;
+
+    //ストレージ
+    private StorageReference storageRef;
+
+    //画像の参照取得
+    private StorageReference spaceRef;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,25 +50,76 @@ public class StudentMypage extends AppCompatActivity {
 
         BluetoothLeScanner mBluetoothLeScanner;
 
+        //firebaseのリファレンス
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        //FireBaseのイベント。最後に走る
+        //FireBaseストレージへのアクセスインスタンス
+        storage = FirebaseStorage.getInstance();
+
+        //ストレージへの参照
+        storageRef = storage.getReference();
+
+
+        //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                //全データを取ってくる
-                Object Value = dataSnapshot.getValue();
-                //厳選してとる
-                Object Value2 = dataSnapshot.child("Ivycon").child("Student").child("161019").child("Photo").getValue();
+                //グローバル変数クラス
+                UtilCommon common = (UtilCommon)getApplication();
+                Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=",common.getothersUID());
 
-                //Log.w("ゲット",Value.toString());
-                assert Value2 != null;
-                Log.w("ゲット2",Value2.toString());
+                //生徒のデータを取ってくる
+                Object Depar = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Depar").getValue();
+                Object Name = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Name").getValue();
+                Object Num = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Num").getValue();
+                Object Prof = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Prof").getValue();
+                Object Year = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Year").getValue();
 
+                //UIDからIN、IMの形式でデータを取ってくる
+                Depar = dataSnapshot.child("Ivycon2").child("Deper").child(Depar.toString()).getValue();
+
+                //学科
+                TextView DeperView = findViewById(R.id.textView14);
+                DeperView.setText(Depar.toString());
+
+                //学籍番号
+                TextView NumView = findViewById(R.id.textView15);
+                NumView.setText(Name.toString());
+
+                //名前
+                TextView NameView = findViewById(R.id.textView16);
+                NameView.setText(Num.toString());
+
+                //学年
+
+                if(Prof != null) {
+                    //プロフィール
+                    TextView ProfView = findViewById(R.id.textView11);
+                    ProfView.setText(Prof.toString());
+                }
+                ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                //画像の参照取得
+                spaceRef = storageRef.child("image/Icon/" + common.getothersUID() + ".jpeg");
+
+                //メモリ
+                final long ONE_MEGABYTE = 1024 * 1024;
+
+                //ストレージイベント
+                spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+                    }
+                });
             }
-
             @Override
             //データがとりに行けなかった場合
             public void onCancelled(@NonNull DatabaseError databaseError) {
