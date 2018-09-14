@@ -5,12 +5,15 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,9 +37,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.view.GravityCompat;
+import android.widget.Toolbar;
 
 
-public class StudentTimeline extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class StudentTimeline extends AppCompatActivity{
+
+    //naivigationMenuの各メニューがタップされた場合のリスナーを指定する
 
     //リストビュー
     ListView ListView;
@@ -69,9 +75,31 @@ public class StudentTimeline extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
 
-        //サイドバーのリスナーを作成
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(this);
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigationview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //ここまではいってる
+                switch (menuItem.getItemId()) {
+                    case R.id.myPage:
+                        //メニュー：ホームがタップされた場合の動作を記述する
+                        Log.d(TAG, "マイページがタップされました");
+                        Intent intent = new Intent(getApplication(), StudentMypage.class);    //インテントの作成
+                        startActivity(intent);
+                        break;
+
+                    case R.id.logout:
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return false;
+            }
+        });
 
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
@@ -131,6 +159,9 @@ public class StudentTimeline extends AppCompatActivity implements NavigationView
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         //mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
+    }
+
+    private void setSupportActionBar(Toolbar toolbar) {
     }
 
     //intデータを 2桁16進数に変換するメソッド
@@ -213,36 +244,4 @@ public class StudentTimeline extends AppCompatActivity implements NavigationView
             }
         }
     };
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.myPage:
-                Log.d(TAG, "Settings Selected!");
-                break;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-
-        switch(item.getItemId()){
-            case R.id.myPage:
-                Log.d(TAG, "マイページ");
-                break;
-            case R.id.logout:
-                Log.d(TAG, "ログアウト");
-                break;
-            case R.id.taikai:
-                Log.d(TAG, "退会");
-                break;
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }
