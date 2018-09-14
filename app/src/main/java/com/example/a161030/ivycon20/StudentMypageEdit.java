@@ -164,6 +164,9 @@ public class StudentMypageEdit extends AppCompatActivity {
                         // Handle unsuccessful uploads
                         Log.w("アップロード","失敗");
 
+                        //アラートを表示
+                        Toast.makeText(StudentMypageEdit.this, "更新に失敗しました。", Toast.LENGTH_SHORT).show();
+
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -171,29 +174,34 @@ public class StudentMypageEdit extends AppCompatActivity {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
                         Log.w("アップロード","成功");
 
+                        //登録する項目を取得する
+                        final EditText profile = findViewById(R.id.profile_edit);
+
+                        //書き込む内容
+                        Object prof = profile.getText().toString();
+
+                        //インスタンス取得
+                        Map<String, Object> childUpdates = new HashMap<>();
+
+                        //UIDのrefの習得
+                        mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
+
+                        //プロフィール
+                        childUpdates.put("Prof", profile.getText().toString());
+
+                        //イベント実行
+                        mDatabase.updateChildren(childUpdates);
+
+                        Toast.makeText(StudentMypageEdit.this, "更新しました", Toast.LENGTH_SHORT).show();
                         // ...
+
+                        //インテントの作成
+                        Intent intent = new Intent(getApplication(), StudentMypage.class);
+
+                        //画面遷移
+                        startActivity(intent);
                     }
                 });
-
-                //登録する項目を取得する
-                final EditText profile = findViewById(R.id.profile_edit);
-
-                //書き込む内容
-                Object prof = profile.getText().toString();
-
-                //インスタンス取得
-                Map<String, Object> childUpdates = new HashMap<>();
-
-                //UIDのrefの習得
-                mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
-
-                //プロフィール
-                childUpdates.put("Prof", profile.getText().toString());
-
-                //イベント実行
-                mDatabase.updateChildren(childUpdates);
-
-                Toast.makeText(StudentMypageEdit.this, "アップロードに成功しました", Toast.LENGTH_SHORT).show();
             }
         });
 
