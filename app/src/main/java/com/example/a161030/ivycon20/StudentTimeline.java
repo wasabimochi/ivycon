@@ -92,6 +92,36 @@ public class StudentTimeline extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
 
+<<<<<<< HEAD
+=======
+        //人類悪顕現 なぜかまーじされない
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigationview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                //ここまではいってる
+                switch (menuItem.getItemId()) {
+                    case R.id.myPage:
+                        //メニュー：ホームがタップされた場合の動作を記述する
+                        Log.d(TAG, "マイページがタップされました");
+                        Intent intent = new Intent(getApplication(), StudentMypage.class);    //インテントの作成
+                        startActivity(intent);
+                        break;
+
+                    case R.id.logout:
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+>>>>>>> ffeature/sidebar_fix
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
 
