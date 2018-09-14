@@ -22,6 +22,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Calendar;
+
+import static java.lang.Integer.parseInt;
+
 public class StudentMypage extends AppCompatActivity {
 
     //FirebaseAuthオブジェクト作成
@@ -88,6 +92,7 @@ public class StudentMypage extends AppCompatActivity {
                 Object Prof = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Prof").getValue();
                 Object Year = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Year").getValue();
 
+
                 //UIDからIN、IMの形式でデータを取ってくる
                 Depar = dataSnapshot.child("Ivycon2").child("Deper").child(Depar.toString()).getValue();
 
@@ -97,19 +102,45 @@ public class StudentMypage extends AppCompatActivity {
 
                 //学籍番号
                 TextView NumView = findViewById(R.id.textView15);
-                NumView.setText(Name.toString());
+                NumView.setText(Num.toString());
 
                 //名前
-                TextView NameView = findViewById(R.id.textView16);
-                NameView.setText(Num.toString());
+                TextView NameView = findViewById(R.id.textView6);
+                NameView.setText(Name.toString());
 
+                //カレンダーインスタンス
+                Calendar cal = Calendar.getInstance();
+
+                //今の年
+                final int NowYear = cal.get(Calendar.YEAR);
+
+                //今の月
+                final int Month = cal.get(Calendar.MONTH);
+
+                //生徒の入学年
+                int AdmissionYear = parseInt(Year.toString());
+
+
+                //入学と今の年の差と最低学年
+                int DifYear = NowYear - AdmissionYear + 1;
+
+                //4月より前なら
+                if (Month <= 4){
+                    DifYear--;
+                }
+
+                //型変換
+                String y = String.valueOf(DifYear);
                 //学年
+                TextView YearView = findViewById(R.id.textView16);
+                YearView.setText(y);
 
                 if(Prof != null) {
                     //プロフィール
                     TextView ProfView = findViewById(R.id.textView11);
                     ProfView.setText(Prof.toString());
                 }
+
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                 //画像の参照取得
                 spaceRef = storageRef.child("Image/Icon/" + common.getothersUID() + ".jpeg");
