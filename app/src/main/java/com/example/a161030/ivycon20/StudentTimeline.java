@@ -93,8 +93,12 @@ public class StudentTimeline extends AppCompatActivity {
         setContentView(R.layout.student_timeline);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         //人類悪顕現 なぜかまーじされない
+=======
+        //マージされないのなんで？（殺意）
+>>>>>>> ffeature/sidebar_fix
         NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigationview);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -4,16 +4,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+<<<<<<< HEAD
     android:layout_height="match_parent">
 
+=======
+    android:layout_height="match_parent"
+    tools:openDrawer="start"
+    android:fitsSystemWindows="true">
+
+<!--リスト-->
+>>>>>>> ffeature/sidebar_fix
     <ListView
         android:id="@+id/ListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+<<<<<<< HEAD
     <ListView
         android:id="@+id/Sidebar"
         android:layout_width="240dp"
+=======
+    <!--サイドバー-->
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigationview"
+        android:layout_width="wrap_content"
+>>>>>>> ffeature/sidebar_fix
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#111"
