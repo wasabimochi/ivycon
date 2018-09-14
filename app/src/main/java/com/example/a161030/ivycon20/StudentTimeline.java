@@ -75,6 +75,7 @@ public class StudentTimeline extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
 
+        //人類悪顕現
         NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigationview);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
