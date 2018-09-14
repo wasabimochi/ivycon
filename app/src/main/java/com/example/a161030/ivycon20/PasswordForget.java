@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,9 +19,6 @@ public class PasswordForget extends AppCompatActivity {
 
     //メールアドレス取得変数
     EditText adress;
-
-    //取得したEditTextを代入する変数
-    String emailAdress;
 
     //Logを使う時に必要
     private final static String TAG = PasswordForget.class.getSimpleName();
@@ -41,32 +39,26 @@ public class PasswordForget extends AppCompatActivity {
         findViewById(R.id.transmission_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@",adress.getText().toString());
+                //メール送信
+                auth.sendPasswordResetEmail(adress.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
 
-                //EditeTextをStringに変換
-                emailAdress = adress.getText().toString();
+                        //メールが無事送信できればログを出す
+                        if (task.isSuccessful()) {
+                            //アラートを表示
+                            Toast.makeText(PasswordForget.this, "送信できました。", Toast.LENGTH_SHORT).show();
 
-                //メール送信関数呼び出し
-                passForget(emailAdress);
+                            //ログイン画面に戻る
+                            finish();
+
+                        }else{  //送信できなければアラートを表示
+                            Toast.makeText(PasswordForget.this, "メールアドレスが見つかりませんでした。もう一度、入力してください。", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
-    }
-
-    //メール送信処理
-    public void passForget(String emailadress){
-
-        //メール送信
-        auth.sendPasswordResetEmail(emailadress).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                //メールが無事送信できればログを出す
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "メール送った");
-                }
-            }
-        });
-
-        //ログイン画面に戻る
-        finish();
     }
 }
