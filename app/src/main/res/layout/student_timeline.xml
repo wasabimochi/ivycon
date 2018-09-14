@@ -8,14 +8,15 @@
     tools:openDrawer="start"
     android:fitsSystemWindows="true">
 
-    <!--サイドバー-->
-
+<!--リスト-->
     <ListView
         android:id="@+id/ListView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
     </ListView>
+
+    <!--サイドバー-->
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigationview"
