@@ -1,10 +1,14 @@
 package com.example.a161030.ivycon20;
 
 import android.bluetooth.le.BluetoothLeScanner;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,12 +42,18 @@ public class StudentMypage extends AppCompatActivity {
     //画像の参照取得
     private StorageReference spaceRef;
 
+    //イメージビュー
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_mypage);
+
+        //オプションボタンを非表示に
+        ImageView Option = (ImageView)findViewById(R.id.option_button);
+        Option.setVisibility(View.INVISIBLE);
 
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
@@ -59,6 +69,8 @@ public class StudentMypage extends AppCompatActivity {
         //ストレージへの参照
         storageRef = storage.getReference();
 
+        //アイコン
+        image = (ImageView)findViewById(R.id.imageView3);
 
         //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -68,7 +80,6 @@ public class StudentMypage extends AppCompatActivity {
 
                 //グローバル変数クラス
                 UtilCommon common = (UtilCommon)getApplication();
-                Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@=",common.getothersUID());
 
                 //生徒のデータを取ってくる
                 Object Depar = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Depar").getValue();
@@ -101,7 +112,7 @@ public class StudentMypage extends AppCompatActivity {
                 }
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                 //画像の参照取得
-                spaceRef = storageRef.child("image/Icon/" + common.getothersUID() + ".jpeg");
+                spaceRef = storageRef.child("Image/Icon/" + common.getothersUID() + ".jpeg");
 
                 //メモリ
                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -110,6 +121,13 @@ public class StudentMypage extends AppCompatActivity {
                 spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
                     public void onSuccess(byte[] bytes) {
+                        //画像取得
+                        Bitmap bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+
+                        bmp = Bitmap.createScaledBitmap(bmp, 70, 70, false);
+
+                        //設定
+                        image.setImageBitmap(bmp);
 
                     }
 
