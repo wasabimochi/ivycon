@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
+<<<<<<< HEAD
     android:fitsSystemWindows="true"
     >
+=======
+    android:fitsSystemWindows="true">
+
+    <!--サイドバー-->
+>>>>>>> e3c644a4324a3522d32c7e38d27447390d5b3c31
 
     <ListView
         android:id="@+id/ListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
+<<<<<<< HEAD
+=======
+    </ListView>
+
+>>>>>>> e3c644a4324a3522d32c7e38d27447390d5b3c31
     <android.support.design.widget.NavigationView
         android:id="@+id/navigationview"
         android:layout_width="wrap_content"
@@ -21,6 +32,13 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
+<<<<<<< HEAD
         app:menu="@menu/drawer"/>
+=======
+        app:menu="@menu/drawer" >
+
+    </android.support.design.widget.NavigationView>
+
+>>>>>>> e3c644a4324a3522d32c7e38d27447390d5b3c31
 
 </android.support.v4.widget.DrawerLayout>
