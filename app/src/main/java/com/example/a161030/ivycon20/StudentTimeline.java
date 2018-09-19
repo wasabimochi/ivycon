@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -154,11 +155,16 @@ public class StudentTimeline extends AppCompatActivity {
                 //リストビューとリスト中身の削除
                 if(sUID.size() > 0){
                     listItems.clear();
+                    //呼出し
+                    OriginalAdapter();
+                    //リストビュー作成
+                    ListView.setAdapter(Adapter);
                     sUID.clear();
                     sName.clear();
                     inDate.clear();
                     Count = 0;
                 }
+                Toast.makeText(StudentTimeline.this, "データ取得中。", Toast.LENGTH_SHORT).show();
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
 
@@ -206,7 +212,6 @@ public class StudentTimeline extends AppCompatActivity {
                                 ListView.setAdapter(Adapter);
 
                             }
-                            Log.d("画像取りに行くよ！！！！","@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -237,6 +242,7 @@ public class StudentTimeline extends AppCompatActivity {
             @Override
             //データがとりに行けなかった場合
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(StudentTimeline.this, "データが取得できませんでした", Toast.LENGTH_SHORT).show();
                 Log.w("エラー", databaseError.toException());
             }
         });
@@ -289,7 +295,7 @@ public class StudentTimeline extends AppCompatActivity {
             common.setothersUID(item.getUID());
 
             //インテントの作成
-            Intent intent = new Intent(getApplication(), StudentMypage.class);
+            Intent intent = new Intent(getApplication(), OtherPage.class);
 
             //画面遷移
             startActivity(intent);
