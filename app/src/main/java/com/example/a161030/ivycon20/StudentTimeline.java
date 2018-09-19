@@ -24,10 +24,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -113,8 +115,22 @@ public class StudentTimeline extends AppCompatActivity {
                         break;
 
                     case R.id.logout:
-                        Intent intent = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
-                        startActivity(intent);
+                        //ログアウト
+                        mAuth.signOut();
+
+                        //ユーザーの現在の状況を取得(ログインしているかなど)
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        //ログインしているかどうかの判定
+                        if (user != null) { //ログインしていればログを出すだけ
+                            Log.d(TAG,"ログインしてる");
+                        } else {            //ログインしていなければログを出しログイン画面に遷移する
+                            //アラートを表示
+                            Toast.makeText(StudentTimeline.this, "ログアウトしました。", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
+                            startActivity(intent);
+                            Log.d(TAG,"ログインしてない");
+                        }
                         break;
 
                     default:
