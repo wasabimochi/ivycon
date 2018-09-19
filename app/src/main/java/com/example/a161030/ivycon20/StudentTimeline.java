@@ -11,8 +11,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,8 +94,6 @@ public class StudentTimeline extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
 
-<<<<<<< HEAD
-=======
         //人類悪顕現 なぜかまーじされない
         NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigationview);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -105,12 +105,11 @@ public class StudentTimeline extends AppCompatActivity {
                     case R.id.myPage:
                         //メニュー：ホームがタップされた場合の動作を記述する
                         Log.d(TAG, "マイページがタップされました");
-                        Intent intent = new Intent(getApplication(), StudentMypage.class);    //インテントの作成
-                        startActivity(intent);
                         break;
 
                     case R.id.logout:
-
+                        Intent intent = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
+                        startActivity(intent);
                         break;
 
                     default:
@@ -121,7 +120,6 @@ public class StudentTimeline extends AppCompatActivity {
             }
         });
 
->>>>>>> ffeature/sidebar_fix
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
 
