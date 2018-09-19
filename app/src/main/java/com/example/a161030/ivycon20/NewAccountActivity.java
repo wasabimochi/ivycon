@@ -159,7 +159,7 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
         //パスワードがきちんと入力されていなければ
-        if (passwd.getText().length() == 0) {
+        if (passwd.getText().length() == 0 || passwd.getText().length() <= 6) {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "パスワードを入力してください。", Toast.LENGTH_SHORT).show();
@@ -167,7 +167,7 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
         //確認用パスワードがきちんと入力されていなければ
-        if (passwd_again.getText().length() == 0) {
+        if (passwd_again.getText().length() == 0 || passwd_again.getText().length() <= 6) {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "確認用パスワードを入力してください。", Toast.LENGTH_SHORT).show();

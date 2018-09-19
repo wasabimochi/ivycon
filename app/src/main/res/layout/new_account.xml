@@ -140,7 +140,8 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="4dp"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:hint="6文字以上のパスワードを入力してください"/>
 
             <TextView
                 android:id="@+id/RePassword"
@@ -156,7 +157,8 @@
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="4dp"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:hint="6文字以上のパスワードを入力してください"/>
 
             <Button
                 android:id="@+id/new_account_button"
