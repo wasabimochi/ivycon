@@ -11,24 +11,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 9664deb7904f73001b9800c66c0758ff199671ba
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-<<<<<<< HEAD
-=======
-=======
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
->>>>>>> e3c644a4324a3522d32c7e38d27447390d5b3c31
->>>>>>> 9664deb7904f73001b9800c66c0758ff199671ba
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -108,14 +99,7 @@ public class StudentTimeline extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
 
-<<<<<<< HEAD
-        //人類悪顕現 なぜかまーじされない
-=======
-<<<<<<< HEAD
-        //人類悪顕現 なぜかまーじされない
-=======
->>>>>>> e3c644a4324a3522d32c7e38d27447390d5b3c31
->>>>>>> 9664deb7904f73001b9800c66c0758ff199671ba
+        //2018/9/19　最新版
         NavigationView mNavigationView = (NavigationView) findViewById(R.id.navigationview);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
