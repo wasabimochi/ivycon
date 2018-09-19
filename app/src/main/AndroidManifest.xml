@@ -38,22 +38,24 @@
             </intent-filter>
         </activity>
         <!--アカウント新規作成-->
-        <activity android:name=".NewAccountActivity" android:theme="@style/SplashTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".NewAccountActivity" android:theme="@style/SplashTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
         <!--パスワード忘れ-->
-        <activity android:name=".PasswordForget" android:theme="@style/AppTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".PasswordForget" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
         <!--タイムライン-->
-        <activity android:name=".StudentTimeline" android:theme="@style/AppTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".StudentTimeline" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
         <!--マイページ-->
-        <activity android:name=".StudentMypage" android:theme="@style/AppTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".StudentMypage" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
+        <!--他生徒のページ-->
+        <activity android:name=".OtherPage" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
         <!--先生向け-->
         <!--先生ログイン-->
-        <activity android:name=".LoginTeacher" android:theme="@style/AppTheme" android:label="@string/app_name"><!--テーマを指定--></activity>
+        <activity android:name=".LoginTeacher" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"><!--テーマを指定--></activity>
         <!--学科情報-->
-        <activity android:name=".TeacherDepartment" android:theme="@style/AppTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".TeacherDepartment" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
         <!--学年情報-->
-        <activity android:name=".TeacherGrade" android:theme="@style/AppTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".TeacherGrade" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
         <!--学生情報-->
-        <activity android:name=".TeacherStudent" android:theme="@style/AppTheme" android:label="@string/app_name"> <!--テーマを指定-->></activity>
+        <activity android:name=".TeacherStudent" android:theme="@style/AppTheme" android:label="@string/app_name" android:screenOrientation="portrait"> <!--テーマを指定-->></activity>
 
 
     </application>
