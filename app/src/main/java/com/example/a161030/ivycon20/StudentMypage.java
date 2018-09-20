@@ -1,6 +1,7 @@
 package com.example.a161030.ivycon20;
 
 import android.bluetooth.le.BluetoothLeScanner;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +32,9 @@ public class StudentMypage extends AppCompatActivity {
 
     //FirebaseAuthオブジェクト作成
     private FirebaseAuth mAuth;
+
+    //FirebaseUserオブジェクト作成
+    FirebaseUser user;
 
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
@@ -49,23 +54,32 @@ public class StudentMypage extends AppCompatActivity {
     //イメージビュー
     private ImageView image;
 
+    //ユーザーID取得変数
+    String UID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_mypage);
 
-        //オプションボタンを非表示に
-        ImageView Option = (ImageView)findViewById(R.id.option_button);
-        Option.setVisibility(View.INVISIBLE);
-
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
+
+        //ユーザーの現在の状況を取得(ログインしているかなど)
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         BluetoothLeScanner mBluetoothLeScanner;
 
         //firebaseのリファレンス
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // ログインに成功し、ログインしたユーザーの情報でUIを更新します
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        //UIDの取得
+        assert user != null;
+        UID = user.getUid();
 
         //FireBaseストレージへのアクセスインスタンス
         storage = FirebaseStorage.getInstance();
@@ -76,21 +90,31 @@ public class StudentMypage extends AppCompatActivity {
         //アイコン
         image = (ImageView)findViewById(R.id.imageView3);
 
+        //左上のアイコンにタップイベントの追加
+        ImageView OptionBottun = (ImageView)findViewById(R.id.option_button);
+        OptionBottun.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        //インテントの作成
+                        Intent myPageEdit = new Intent(getApplication(),StudentMypageEdit.class);
+                        Log.w("@@@@@@@@@@@@@@@@@@@@@@@","aaaaaaaaaaaaaaaaaaaaa");
+                        startActivity(myPageEdit);
+                    }
+                }
+        );
+
         //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                //グローバル変数クラス
-                UtilCommon common = (UtilCommon)getApplication();
-
                 //生徒のデータを取ってくる
-                Object Depar = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Depar").getValue();
-                Object Name = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Name").getValue();
-                Object Num = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Num").getValue();
-                Object Prof = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Prof").getValue();
-                Object Year = dataSnapshot.child("Ivycon2").child("Student").child(common.getothersUID()).child("Year").getValue();
+                Object Depar = dataSnapshot.child("Ivycon2").child("Student").child(UID).child("Depar").getValue();
+                Object Name = dataSnapshot.child("Ivycon2").child("Student").child(UID).child("Name").getValue();
+                Object Num = dataSnapshot.child("Ivycon2").child("Student").child(UID).child("Num").getValue();
+                Object Prof = dataSnapshot.child("Ivycon2").child("Student").child(UID).child("Prof").getValue();
+                Object Year = dataSnapshot.child("Ivycon2").child("Student").child(UID).child("Year").getValue();
 
 
                 //UIDからIN、IMの形式でデータを取ってくる
@@ -143,7 +167,7 @@ public class StudentMypage extends AppCompatActivity {
 
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                 //画像の参照取得
-                spaceRef = storageRef.child("Image/Icon/" + common.getothersUID() + ".jpeg");
+                spaceRef = storageRef.child("Image/Icon/" + UID + ".jpeg");
 
                 //メモリ
                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -154,8 +178,6 @@ public class StudentMypage extends AppCompatActivity {
                     public void onSuccess(byte[] bytes) {
                         //画像取得
                         Bitmap bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-
-                        bmp = Bitmap.createScaledBitmap(bmp, 70, 70, false);
 
                         //設定
                         image.setImageBitmap(bmp);
