@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -43,6 +44,12 @@ public class NewAccountActivity extends AppCompatActivity {
 
     Object Depar;
 
+    // 選択されているアイテムのIndexを取得
+    int department_idx;
+
+    // 選択されているアイテムを取得
+    String department_item;
+
     //Logを使う時に必要
     private final static String TAG = NewAccountActivity.class.getSimpleName();
 
@@ -61,6 +68,51 @@ public class NewAccountActivity extends AppCompatActivity {
         //Reference取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        // Spinnerオブジェクトを取得
+        Spinner department = (Spinner)findViewById(R.id.new_department);
+        // 選択されているアイテムのIndexを取得
+        department_idx = department.getSelectedItemPosition();
+        // 選択されているアイテムを取得
+        department_item = (String)department.getSelectedItem();
+
+        department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //何も選択されなかった時の動作
+            @Override
+            public void onNothingSelected(AdapterView adapterView) {
+                Log.w("@@@@@@@@@@@@@@@@@@@@@@@","1111111111111111111111111111");
+
+            }
+
+            @Override
+            public void onItemSelected(AdapterView parent, View view, int position, long id) {
+                //選択されたアイテム名と位置（index)を内部変数へ保存
+                //どの学科が選択されたか
+                Log.w("@@@@@@@@@@@@@@@@@@@@@@@","22222222222222222222222222222");
+
+                switch (department_idx){
+                    case 0:
+                        department_item = "-LGhFa150qB3TQHMa5z7";
+                    case 1:
+                        department_item ="-LGhFWKgRIPC6jVByYip";
+                    case 2:
+                        department_item = "-LGhFRm-6N8LgqM9WU9V";
+                    case 3:
+                        department_item = "-LGhFIYgqwB2vnnOUBG8";
+                    case 4:
+                        department_item = "-LGhFbSuk3SdtaeE8CI5";
+                    case 5:
+                        department_item = "-LGhFXiLSgc8ga6gesSS";
+                    case 6:
+                        department_item = "-LGhFTfSP-dPpDOqZ_Gh";
+                    case 7:
+                        department_item = "-LGhFZjy3ZRKG_59GxWA";
+                    case 8:
+                        department_item = "-LGhFVJSogdEShwcrSlP";
+                }
+            }
+
+        });
+
         findViewById(R.id.new_account_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,17 +127,11 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //登録する項目を取得する
         final EditText number = findViewById(R.id.new_number);
-        // Spinnerオブジェクトを取得
-        Spinner department = (Spinner)findViewById(R.id.new_department);
-        // 選択されているアイテムのIndexを取得
-        int department_idx = department.getSelectedItemPosition();
-        // 選択されているアイテムを取得
-        String department_item = (String)department.getSelectedItem();
         Spinner year = (Spinner)findViewById(R.id.new_year);
         // 選択されているアイテムのIndexを取得
-        final int year_idx = department.getSelectedItemPosition();
+        final int year_idx = year.getSelectedItemPosition();
         // 選択されているアイテムを取得
-        String year_item = (String)department.getSelectedItem();
+        String year_item = (String)year.getSelectedItem();
         final EditText name = findViewById(R.id.new_name);
         EditText mail = findViewById(R.id.new_mail);
         EditText passwd = findViewById(R.id.new_password);
@@ -99,43 +145,6 @@ public class NewAccountActivity extends AppCompatActivity {
 
             return;
         }
-        //度の学科が選択されたか
-        if (department_idx == 0) {
-            department_item = "-LGhFa150qB3TQHMa5z7";
-        }else if(department_idx == 1){
-            department_item ="-LGhFWKgRIPC6jVByYip";
-        }else if(department_idx == 2){
-            department_item = "-LGhFRm-6N8LgqM9WU9V";
-        }else if(department_idx == 3){
-            department_item = "-LGhFIYgqwB2vnnOUBG8";
-        }else if(department_idx ==4){
-            department_item = "-LGhFbSuk3SdtaeE8CI5";
-        }else if(department_idx == 5){
-            department_item = "-LGhFXiLSgc8ga6gesSS";
-        }else if(department_idx == 6){
-            department_item = "-LGhFTfSP-dPpDOqZ_Gh";
-        }else if(department_idx == 7){
-            department_item = "-LGhFZjy3ZRKG_59GxWA";
-        }else if(department_idx == 8){
-            department_item = "-LGhFVJSogdEShwcrSlP";
-        }
-
-        //FireBaseのイベント
-        final String finalDepartment_item1 = department_item;
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Deparをとってくる
-                Depar = dataSnapshot.child("Ivycon2").child("Deper").child(finalDepartment_item1).getValue();
-                Log.w("きたああああああああああああああああああ",Depar.toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.w("エラー", databaseError.toException());
-            }
-        });
 
         //現在のカレンダー取得
         Calendar calendar = Calendar.getInstance();
@@ -159,7 +168,7 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
         //パスワードがきちんと入力されていなければ
-        if (passwd.getText().length() == 0 || passwd.getText().length() <= 6) {
+        if (passwd.getText().length() == 0 || passwd.getText().length() <= 5) {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "パスワードを入力してください。", Toast.LENGTH_SHORT).show();
@@ -167,7 +176,7 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
         //確認用パスワードがきちんと入力されていなければ
-        if (passwd_again.getText().length() == 0 || passwd_again.getText().length() <= 6) {
+        if (passwd_again.getText().length() == 0 || passwd_again.getText().length() <= 5) {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "確認用パスワードを入力してください。", Toast.LENGTH_SHORT).show();
@@ -205,7 +214,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学籍番号
                     childUpdates.put("Num", number.getText().toString());
                     //学科
-                    childUpdates.put("Depar", Depar.toString());
+                    childUpdates.put("Depar", department_item);
                     //入学年
                     childUpdates.put("Year", String.valueOf(years - year_idx));
                     //名前
@@ -219,6 +228,9 @@ public class NewAccountActivity extends AppCompatActivity {
 
                     //画面遷移
                     startActivity(intent);
+
+                    //遷移したらこの画面を消す
+                    finish();
                 } else {
                     // サインインに失敗した場合は、ユーザーにメッセージを表示します。
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
