@@ -23,7 +23,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -95,6 +97,13 @@ public class StudentTimeline extends AppCompatActivity {
     private static String uuid=null;
     private static boolean Inivy = false; //ivyにいるか
 
+    //ユーザーID取得変数
+    String myUID;
+
+
+    //自画像
+    //イメージビュー
+    //private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +119,10 @@ public class StudentTimeline extends AppCompatActivity {
                 //ここまではいってる
                 switch (menuItem.getItemId()) {
                     case R.id.myPage:
+
+                        //インテントの作成
+                        Intent myPage = new Intent(getApplication(),StudentMypage.class);
+                        startActivity(myPage);
                         //メニュー：ホームがタップされた場合の動作を記述する
                         Log.d(TAG, "マイページがタップされました");
                         break;
@@ -127,8 +140,8 @@ public class StudentTimeline extends AppCompatActivity {
                         } else {            //ログインしていなければログを出しログイン画面に遷移する
                             //アラートを表示
                             Toast.makeText(StudentTimeline.this, "ログアウトしました。", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
-                            startActivity(intent);
+                            Intent logout = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
+                            startActivity(logout);
                             Log.d(TAG,"ログインしてない");
                         }
                         break;
@@ -143,6 +156,13 @@ public class StudentTimeline extends AppCompatActivity {
 
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
+
+        // ログインに成功し、ログインしたユーザーの情報でUIを更新します
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        //UIDの取得
+        assert user != null;
+        myUID = user.getUid();
 
         BluetoothLeScanner mBluetoothLeScanner;
 
@@ -161,6 +181,7 @@ public class StudentTimeline extends AppCompatActivity {
         // タップ時のイベントを追加
         ListView.setOnItemClickListener(onItemClickListener);
 
+        //image = (ImageView)findViewById(R.id.myIcon);
         ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
         //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -180,6 +201,10 @@ public class StudentTimeline extends AppCompatActivity {
                     Count = 0;
                 }
                 Toast.makeText(StudentTimeline.this, "データ取得中。", Toast.LENGTH_SHORT).show();
+
+                //自分のデータを取りに行く
+                MyDate();
+
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
 
@@ -285,6 +310,55 @@ public class StudentTimeline extends AppCompatActivity {
         Adapter = new StudentListAdapter(this, R.layout.student_item, listItems);
     }
 
+
+    //自分のデータを取りに行く
+    private void MyDate() {
+        //FireBaseのイベント
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //名前
+                Object Name = dataSnapshot.child("Ivycon2").child("Student").child(myUID).child("Name").getValue();
+
+                TextView NameView = findViewById(R.id.textView3);
+
+                NameView.setText(Name.toString());
+
+                ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                //画像の参照取得
+                spaceRef = storageRef.child("Image/Icon/" + myUID + "_icon.jpeg");
+
+                //メモリ
+                final long ONE_MEGABYTE = 1024 * 1024;
+
+                //ストレージイベント
+                spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        ImageView image = (ImageView)findViewById(R.id.myIcon);
+                        //画像取得
+                        Bitmap bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+
+                        //設定
+                        image.setImageBitmap(bmp);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+
+                    }
+                });
+            }
+            @Override
+            //データがとりに行けなかった場合
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("エラー", databaseError.toException());
+            }
+        });
+
+    }
 
     //intデータを 2桁16進数に変換するメソッド
     public String IntToHex2(int i) {
