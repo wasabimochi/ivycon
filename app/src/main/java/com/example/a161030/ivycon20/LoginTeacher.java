@@ -15,6 +15,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class LoginTeacher extends AppCompatActivity {
 
     //FirebaseAuthオブジェクト作成
@@ -44,6 +47,7 @@ public class LoginTeacher extends AppCompatActivity {
         findViewById(R.id.teacher_login_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 login();
             }
         });
@@ -56,25 +60,22 @@ public class LoginTeacher extends AppCompatActivity {
         EditText teacher_login_aders = findViewById(R.id.teacher_login_address);
         EditText teacher_login_paswd = findViewById(R.id.teacher_login_password);
 
-        //try {
-            //ログイン処理
-            mAuth.signInWithEmailAndPassword(teacher_login_aders.getText().toString(), teacher_login_paswd.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {  //ログインに成功し、ログインしたユーザーの情報でUIを更新
-                        // Log.d(TAG, "ログインうまくいった");
-                        user = mAuth.getCurrentUser();
-                        Intent intent = new Intent(getApplication(), TeacherDepartment.class);    //インテントの作成
-                        startActivity(intent);  //画面遷移
-                    } else {                       //サインインに失敗した場合は、ユーザーにメッセージを表示
-                        Log.w(TAG, "ログインダメでした", task.getException());
-                        Toast.makeText(LoginTeacher.this, "もう一度入力してください。", Toast.LENGTH_SHORT).show();
-                    }
+        //ログイン処理
+        mAuth.signInWithEmailAndPassword(teacher_login_aders.getText().toString(), teacher_login_paswd.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {  //ログインに成功し、ログインしたユーザーの情報でUIを更新
+                    // Log.d(TAG, "ログインうまくいった");
+                    user = mAuth.getCurrentUser();
+                    Intent intent = new Intent(getApplication(), TeacherDepartment.class);    //インテントの作成
+                    startActivity(intent);  //画面遷移
+                    finish();   //この画面を殺す
+                } else {                       //サインインに失敗した場合は、ユーザーにメッセージを表示
+                    Log.w(TAG, "ログインダメでした", task.getException());
+                    Toast.makeText(LoginTeacher.this, "もう一度入力してください。", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-            });
-        //}catch(Exception e){
-            //Toast.makeText(LoginTeacher.this, "メールアドレスとパスワードを入力してください。", Toast.LENGTH_SHORT).show();
-        //}
+        });
     }
 }

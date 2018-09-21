@@ -9,21 +9,21 @@
     view.setVisibility(View.GONE)
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/grade_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1年"
         android:textSize="24sp" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/grade_two"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="2年"
         android:textSize="24sp" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/grade_three"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="3年"

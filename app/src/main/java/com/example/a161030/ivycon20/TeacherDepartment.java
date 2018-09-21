@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.util.Log;
 
@@ -45,7 +46,7 @@ public class TeacherDepartment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), TeacherGrade.class); //インテントの作成
-                intent.putExtra("Key" ,"CD"); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Key" ,"CG"); //Activityに学科のIDを引数として渡す
                 startActivity(intent);   //画面遷移
             }
         });
@@ -110,5 +111,17 @@ public class TeacherDepartment extends AppCompatActivity {
                 startActivity(intent);   //画面遷移
             }
         });
+    }
+
+    //バックキーが押されたらこのActivityを殺す
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@","@@@@@@@@@@@@@@@@@@@");
+            finish();
+            return super.onKeyDown(keyCode, event);
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
     }
 }
