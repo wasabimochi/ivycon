@@ -16,6 +16,7 @@ import android.util.Log;
 import android.widget.TextView;
 import android.content.Intent;
 
+//このクラスいらないです
 
 public class BeaconManager extends AppCompatActivity {
 
