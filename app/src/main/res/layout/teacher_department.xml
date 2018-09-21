@@ -117,7 +117,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-=======
-<!--学科情報-->
->>>>>>> 3611f5590a344a32e1e7dc2806c0255311bff13b
+    <android.support.design.widget.NavigationView
+        android:id="@+id/teacher_department_navigationview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:headerLayout="@layout/drawer_header"
+        app:menu="@menu/drawer" />
+
 </android.support.constraint.ConstraintLayout>

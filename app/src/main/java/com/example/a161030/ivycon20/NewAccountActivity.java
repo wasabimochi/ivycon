@@ -94,7 +94,6 @@ public class NewAccountActivity extends AppCompatActivity {
 
             //　アイテムが選択されなかった
             public void onNothingSelected(AdapterView<?> parent) {
-                //
             }
         });
     }
