@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -195,11 +196,7 @@ public class StudentMypageEdit extends AppCompatActivity {
                         Toast.makeText(StudentMypageEdit.this, "更新しました", Toast.LENGTH_SHORT).show();
                         // ...
 
-                        //インテントの作成
-                        Intent intent = new Intent(getApplication(), StudentMypage.class);
-
-                        //画面遷移
-                        startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -234,6 +231,17 @@ public class StudentMypageEdit extends AppCompatActivity {
                 //アラートを表示
                 Toast.makeText(StudentMypageEdit.this, "Exceptionでた", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@","@@@@@@@@@@@@@@@@@@@");
+            finish();
+            return super.onKeyDown(keyCode, event);
+        } else {
+            return super.onKeyDown(keyCode, event);
         }
     }
 }
