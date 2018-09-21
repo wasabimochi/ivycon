@@ -66,6 +66,8 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
     public void NewAccountMove(View view) {
         Intent intent = new Intent(getApplication(), NewAccountActivity.class); //インテントの作成
         startActivity(intent);   //画面遷移
+
+        finish();   //遷移したらこの画面を消す
     }
 
     //テキスト（パスワード忘れ）のクリックイベント
@@ -96,6 +98,8 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
                         user = mAuth.getCurrentUser();
                         Intent intent = new Intent(getApplication(), StudentTimeline.class);    //インテントの作成
                         startActivity(intent);  //画面遷移
+
+                        finish();   //遷移したらこの画面を消す
                     } else {                       //サインインに失敗した場合は、ユーザーにメッセージを表示
                         Log.w(TAG, "ログインダメでした", task.getException());
                         Toast.makeText(LoginStudent.this, "もう一度入力してください。", Toast.LENGTH_SHORT).show();

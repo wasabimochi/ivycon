@@ -7,7 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+<<<<<<< HEAD
 import android.widget.ArrayAdapter;
+=======
+>>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,6 +49,12 @@ public class NewAccountActivity extends AppCompatActivity {
 
     Object Depar;
 
+    // 選択されているアイテムのIndexを取得
+    int department_idx;
+
+    // 選択されているアイテムを取得
+    String department_item;
+
     //Logを使う時に必要
     private final static String TAG = NewAccountActivity.class.getSimpleName();
 
@@ -63,6 +72,51 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //Reference取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        // Spinnerオブジェクトを取得
+        Spinner department = (Spinner)findViewById(R.id.new_department);
+        // 選択されているアイテムのIndexを取得
+        department_idx = department.getSelectedItemPosition();
+        // 選択されているアイテムを取得
+        department_item = (String)department.getSelectedItem();
+
+        department.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //何も選択されなかった時の動作
+            @Override
+            public void onNothingSelected(AdapterView adapterView) {
+                Log.w("@@@@@@@@@@@@@@@@@@@@@@@","1111111111111111111111111111");
+
+            }
+
+            @Override
+            public void onItemSelected(AdapterView parent, View view, int position, long id) {
+                //選択されたアイテム名と位置（index)を内部変数へ保存
+                //どの学科が選択されたか
+                Log.w("@@@@@@@@@@@@@@@@@@@@@@@","22222222222222222222222222222");
+
+                switch (department_idx){
+                    case 0:
+                        department_item = "-LGhFa150qB3TQHMa5z7";
+                    case 1:
+                        department_item ="-LGhFWKgRIPC6jVByYip";
+                    case 2:
+                        department_item = "-LGhFRm-6N8LgqM9WU9V";
+                    case 3:
+                        department_item = "-LGhFIYgqwB2vnnOUBG8";
+                    case 4:
+                        department_item = "-LGhFbSuk3SdtaeE8CI5";
+                    case 5:
+                        department_item = "-LGhFXiLSgc8ga6gesSS";
+                    case 6:
+                        department_item = "-LGhFTfSP-dPpDOqZ_Gh";
+                    case 7:
+                        department_item = "-LGhFZjy3ZRKG_59GxWA";
+                    case 8:
+                        department_item = "-LGhFVJSogdEShwcrSlP";
+                }
+            }
+
+        });
 
         findViewById(R.id.new_account_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +158,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //登録する項目を取得する
         final EditText number = findViewById(R.id.new_number);
+<<<<<<< HEAD
 
         // Spinnerオブジェクトを取得
         Spinner department = (Spinner)findViewById(R.id.new_department);
@@ -114,14 +169,22 @@ public class NewAccountActivity extends AppCompatActivity {
         // 選択されているアイテムを取得
         String department_item = (String)department.getSelectedItem();
 
+=======
+>>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
         Spinner year = (Spinner)findViewById(R.id.new_year);
 
         // 選択されているアイテムのIndexを取得
+<<<<<<< HEAD
         final int year_idx = department.getSelectedItemPosition();
 
         // 選択されているアイテムを取得
         String year_item = (String)department.getSelectedItem();
 
+=======
+        final int year_idx = year.getSelectedItemPosition();
+        // 選択されているアイテムを取得
+        String year_item = (String)year.getSelectedItem();
+>>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
         final EditText name = findViewById(R.id.new_name);
 
         EditText mail = findViewById(R.id.new_mail);
@@ -138,6 +201,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
             return;
         }
+<<<<<<< HEAD
 
         //度の学科が選択されたか
         if (department_idx == 0) {
@@ -176,6 +240,8 @@ public class NewAccountActivity extends AppCompatActivity {
                 Log.w("エラー", databaseError.toException());
             }
         });
+=======
+>>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
 
         //現在のカレンダー取得
         Calendar calendar = Calendar.getInstance();
@@ -199,7 +265,7 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
         //パスワードがきちんと入力されていなければ
-        if (passwd.getText().length() == 0 || passwd.getText().length() <= 6) {
+        if (passwd.getText().length() == 0 || passwd.getText().length() <= 5) {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "パスワードを入力してください。", Toast.LENGTH_SHORT).show();
@@ -207,7 +273,7 @@ public class NewAccountActivity extends AppCompatActivity {
             return;
         }
         //確認用パスワードがきちんと入力されていなければ
-        if (passwd_again.getText().length() == 0 || passwd_again.getText().length() <= 6) {
+        if (passwd_again.getText().length() == 0 || passwd_again.getText().length() <= 5) {
 
             //アラートを表示
             Toast.makeText(NewAccountActivity.this, "確認用パスワードを入力してください。", Toast.LENGTH_SHORT).show();
@@ -245,7 +311,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学籍番号
                     childUpdates.put("Num", number.getText().toString());
                     //学科
-                    childUpdates.put("Depar", Depar.toString());
+                    childUpdates.put("Depar", department_item);
                     //入学年
                     childUpdates.put("Year", String.valueOf(years - year_idx));
                     //名前
@@ -259,6 +325,9 @@ public class NewAccountActivity extends AppCompatActivity {
 
                     //画面遷移
                     startActivity(intent);
+
+                    //遷移したらこの画面を消す
+                    finish();
                 } else {
                     // サインインに失敗した場合は、ユーザーにメッセージを表示します。
                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
