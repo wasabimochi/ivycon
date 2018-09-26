@@ -142,8 +142,8 @@ public class StudentMypageEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //ストレージの参照                                       directory/directory/ファイル名
-                StorageReference mountainImagesRef = storageRef.child("Image/Icon/" + UID + ".jpeg");
-                StorageReference mountainImagesRef2 = storageRef.child("Image/Icon/" + UID + "_icon.jpeg");
+                StorageReference mountainImagesRef = storageRef.child("Image/Icon/" + UID + "/" + UID + ".jpeg");
+                StorageReference mountainImagesRef2 = storageRef.child("Image/Icon/" + UID + "/" + UID + "_icon.jpeg");
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ByteArrayOutputStream baos2 = new ByteArrayOutputStream();

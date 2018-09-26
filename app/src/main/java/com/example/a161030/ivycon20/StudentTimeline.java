@@ -15,11 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -41,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,12 +95,10 @@ public class StudentTimeline extends AppCompatActivity {
     private static boolean Inivy = false; //ivyにいるか
 
     //ユーザーID取得変数
-    String myUID;
+    private String myUID;
 
-
-    //自画像
-    //イメージビュー
-    //private ImageView image;
+    //今日の日付
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +176,9 @@ public class StudentTimeline extends AppCompatActivity {
         // タップ時のイベントを追加
         ListView.setOnItemClickListener(onItemClickListener);
 
-        //image = (ImageView)findViewById(R.id.myIcon);
+        //今日の日付
+        calendar = Calendar.getInstance();
+
         ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
         //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -206,7 +203,7 @@ public class StudentTimeline extends AppCompatActivity {
                 MyDate();
 
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
-                for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").getChildren()) {
+                for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").child(String.valueOf(calendar.get(Calendar.DATE))).getChildren()) {
 
                     //UIDをとってくる
                     Object UID = postSnapshot.child("UID").getValue();
@@ -214,69 +211,72 @@ public class StudentTimeline extends AppCompatActivity {
                     //Dataをとってくる
                     Object Data = postSnapshot.child("Data").getValue();
 
-                    //UIDを元に名まえを取ってくる
-                    Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
+                    //取得データのnullチェック
+                    if(UID != null && Data != null) {
+                        //UIDを元に名まえを取ってくる
+                        Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
-                    //リストに格納
-                    sUID.add(UID.toString());
-                    sName.add(StudentName.toString());
-                    inDate.add(Data.toString());
+                        //リストに格納
+                        sUID.add(UID.toString());
+                        sName.add(StudentName.toString());
+                        inDate.add(Data.toString());
 
-                    ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
-                    //画像の参照取得
-                    spaceRef = storageRef.child("Image/Icon/" + UID.toString() + "_icon.jpeg");
+                        ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                        //画像の参照取得
+                        spaceRef = storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg");
 
-                    //メモリ
-                    final long ONE_MEGABYTE = 1024 * 1024;
+                        //メモリ
+                        final long ONE_MEGABYTE = 1024 * 1024;
 
-                    //ストレージイベント
-                    spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            //サムネイル画像取得
-                            Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        //ストレージイベント
+                        spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                //サムネイル画像取得
+                                Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                            //リストアイテム作成
-                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
+                                //リストアイテム作成
+                                StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
 
-                            //リストに追加
-                            listItems.add(TimelineObject);
+                                //リストに追加
+                                listItems.add(TimelineObject);
 
-                            Count++;
+                                Count++;
 
-                            if(Count == sName.size()) {
-                                //呼出し
-                                OriginalAdapter();
+                                if (Count == sName.size()) {
+                                    //呼出し
+                                    OriginalAdapter();
 
-                                //リストビュー作成
-                                ListView.setAdapter(Adapter);
+                                    //リストビュー作成
+                                    ListView.setAdapter(Adapter);
 
+                                }
                             }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle any errors
-                            //デフォルト画像のビットマップ
-                            Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle any errors
+                                //デフォルト画像のビットマップ
+                                Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
-                            //リストアイテム作成
-                            StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count),  sUID.get(Count));
+                                //リストアイテム作成
+                                StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
 
-                            //リストに追加
-                            listItems.add(TimelineObject);
+                                //リストに追加
+                                listItems.add(TimelineObject);
 
-                            Count++;
+                                Count++;
 
-                            if(Count == sName.size()) {
-                                //呼出し
-                                OriginalAdapter();
+                                if (Count == sName.size()) {
+                                    //呼出し
+                                    OriginalAdapter();
 
-                                //リストビュー作成
-                                ListView.setAdapter(Adapter);
+                                    //リストビュー作成
+                                    ListView.setAdapter(Adapter);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             }
             @Override
@@ -297,6 +297,7 @@ public class StudentTimeline extends AppCompatActivity {
                 (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
         assert bluetoothManager != null;
         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+
         mBluetoothAdapter.startLeScan(mLeScanCallback);
         //mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
 
@@ -397,7 +398,7 @@ public class StudentTimeline extends AppCompatActivity {
             // デバイスが検出される度に呼び出されます。
             if (scanRecord.length > 30) {
                 uuid = null;
-                //Log.d(TAG,"検索中");
+                Log.d(TAG,"検索中");
 
                 //iBeacon の場合 6 byte 目から、 9 byte 目はこの値に固定されている。
                 if ((scanRecord[5] == (byte) 0x4c) && (scanRecord[6] == (byte) 0x00) &&
@@ -430,26 +431,44 @@ public class StudentTimeline extends AppCompatActivity {
                     //ivyのビーコンと一致した場合
                     if (UUID.equals(uuid)) {
                         Inivy = true;
-                        //Log.d(TAG,"ようこそ！");
-                        //uuid = "48534442-4C45-4144-80C0-18FFFFFFFFFF";
+                        Log.d(TAG,"ようこそ！");
                         //Log.d(TAG,"きたああああああ！ UUID" + uuid + "major" + major + "minor" + minor);
                     }
 
                     if (!(UUID.equals(uuid))) {
-                        //Log.d(TAG,"やったぜ！");
+                        Log.d(TAG,"やったぜ！");
                     }
                 }
             }
             //ビーコンを見つけたらfirebaseにアクセスさせてステータスを書き換える
             if(Inivy) {
                 //書き込む内容
-                Object postValues = "beaconからのプレセント!";
+                //UID
+                Object postValuesUID = myUID;
+
+                //今日の時間
+                Object postValuesDate  = calendar.get(Calendar.HOUR_OF_DAY);
+                postValuesDate = postValuesDate.toString() + ":" + calendar.get(Calendar.MINUTE);
+
                 //インスタンス取得
                 Map<String, Object> childUpdates = new HashMap<>();
-                //データ書き込みのイベント複数セッティング
-                childUpdates.put("/Ivycon/Student/161019/Profile/", postValues);
+
+                //当日以外のログインを消す
+                //UID
+                childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + postValuesDate.toString() + "/UID"  , postValuesUID);
+                //日付
+                childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + postValuesDate.toString() + "/Data", postValuesDate);
+
                 //イベント実行
                 mDatabase.updateChildren(childUpdates);
+
+                //スキャン停止
+                final BluetoothManager bluetoothManager =
+                        (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+                assert bluetoothManager != null;
+                BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+
             }
         }
     };
