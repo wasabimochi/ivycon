@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-<<<<<<< HEAD
+
 import android.widget.ArrayAdapter;
-=======
->>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -158,7 +156,6 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //登録する項目を取得する
         final EditText number = findViewById(R.id.new_number);
-<<<<<<< HEAD
 
         // Spinnerオブジェクトを取得
         Spinner department = (Spinner)findViewById(R.id.new_department);
@@ -169,22 +166,20 @@ public class NewAccountActivity extends AppCompatActivity {
         // 選択されているアイテムを取得
         String department_item = (String)department.getSelectedItem();
 
-=======
->>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
+
         Spinner year = (Spinner)findViewById(R.id.new_year);
 
         // 選択されているアイテムのIndexを取得
-<<<<<<< HEAD
+
         final int year_idx = department.getSelectedItemPosition();
 
         // 選択されているアイテムを取得
         String year_item = (String)department.getSelectedItem();
 
-=======
-        final int year_idx = year.getSelectedItemPosition();
+        //final int year_idx = year.getSelectedItemPosition();
         // 選択されているアイテムを取得
-        String year_item = (String)year.getSelectedItem();
->>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
+        //String year_item = (String)year.getSelectedItem();
+
         final EditText name = findViewById(R.id.new_name);
 
         EditText mail = findViewById(R.id.new_mail);
@@ -201,7 +196,6 @@ public class NewAccountActivity extends AppCompatActivity {
 
             return;
         }
-<<<<<<< HEAD
 
         //度の学科が選択されたか
         if (department_idx == 0) {
@@ -240,8 +234,6 @@ public class NewAccountActivity extends AppCompatActivity {
                 Log.w("エラー", databaseError.toException());
             }
         });
-=======
->>>>>>> d20f4ecfd93b217b9503ba5f0a95d97b0be29112
 
         //現在のカレンダー取得
         Calendar calendar = Calendar.getInstance();
@@ -311,7 +303,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学籍番号
                     childUpdates.put("Num", number.getText().toString());
                     //学科
-                    childUpdates.put("Depar", department_item);
+                    childUpdates.put("Depar", finalDepartment_item);
                     //入学年
                     childUpdates.put("Year", String.valueOf(years - year_idx));
                     //名前
