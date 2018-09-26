@@ -58,8 +58,16 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
         //ユーザーの現在の状況を取得(ログインしているかなど)
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        button_segue=(Button)findViewById(R.id.login_button);    //button3を見つけ出す
-        button_segue.setOnClickListener(this);              //button3にクリックイベントをぶち込む
+        //ログインしていればログイン処理を飛ばしてタイムラインに飛ぶ
+        if(user != null){
+            Intent intent = new Intent(getApplication(), StudentTimeline.class);    //インテントの作成
+            startActivity(intent);  //画面遷移
+
+            finish();   //遷移したらこの画面を消す
+        }else{
+            button_segue=(Button)findViewById(R.id.login_button);    //button3を見つけ出す
+            button_segue.setOnClickListener(this);              //button3にクリックイベントをぶち込む
+        }
     }
 
     //テキスト（アカウント新規作成）のクリックイベント
@@ -111,8 +119,4 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
             Toast.makeText(LoginStudent.this, "メールアドレスとパスワードを入力してください。", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
 }
