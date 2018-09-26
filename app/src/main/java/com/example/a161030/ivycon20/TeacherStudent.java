@@ -1,5 +1,6 @@
 package com.example.a161030.ivycon20;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -20,6 +21,15 @@ public class TeacherStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.student_timeline);
+
+        //インテントの作成
+        Intent intent = getIntent();
+
+        //前のアクティビティで渡された値を取得
+        Bundle extras = intent.getExtras();
+
+        //前のアクティビティで渡された値を学科変数に代入
+        String depar = extras.getString("Key");
 
         students.add("hirose");
         students.add("kugimiya");
