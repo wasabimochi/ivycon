@@ -31,18 +31,19 @@
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_width="167dp"
+                android:layout_height="50dp"
                 android:layout_marginEnd="112dp"
                 android:layout_marginStart="112dp"
                 android:layout_marginTop="7dp"
                 android:text="学科選択"
+                android:textAlignment="center"
                 android:textSize="36sp" />
 
             <Button
                 android:id="@+id/MI"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="50dp"
                 android:text="医療情報学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -51,7 +52,7 @@
             <Button
                 android:id="@+id/IN"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
+                android:layout_height="50dp"
                 android:text="インターネット学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -60,7 +61,7 @@
             <Button
                 android:id="@+id/CD"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="50dp"
                 android:text="CGデザイン学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -69,7 +70,7 @@
             <Button
                 android:id="@+id/CAD"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="50dp"
                 android:text="3DCADクリエイト学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -78,7 +79,7 @@
             <Button
                 android:id="@+id/OB"
                 android:layout_width="match_parent"
-                android:layout_height="52dp"
+                android:layout_height="50dp"
                 android:text="オフィスビジネス学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -87,7 +88,7 @@
             <Button
                 android:id="@+id/IS"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
+                android:layout_height="50dp"
                 android:text="情報処理学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -96,7 +97,7 @@
             <Button
                 android:id="@+id/PO"
                 android:layout_width="match_parent"
-                android:layout_height="53dp"
+                android:layout_height="50dp"
                 android:text="公務員ビジネス学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -105,7 +106,7 @@
             <Button
                 android:id="@+id/MB"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="50dp"
                 android:text="医療ビジネス学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
@@ -114,7 +115,7 @@
             <Button
                 android:id="@+id/IM"
                 android:layout_width="match_parent"
-                android:layout_height="58dp"
+                android:layout_height="50dp"
                 android:text="モバイルシステムクリエイト学科"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="42dp"
