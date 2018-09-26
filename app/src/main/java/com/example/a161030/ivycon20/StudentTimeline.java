@@ -94,6 +94,10 @@ public class StudentTimeline extends AppCompatActivity {
     private static String uuid=null;
     private static boolean Inivy = false; //ivyにいるか
 
+    private boolean InBluetooth = false;    //Bluetoothの範囲に入ったか
+
+    private boolean UIDmatch = false;   //UIDが一致したか
+
     //ユーザーID取得変数
     private String myUID;
 
@@ -197,10 +201,12 @@ public class StudentTimeline extends AppCompatActivity {
                     inDate.clear();
                     Count = 0;
                 }
+
                 Toast.makeText(StudentTimeline.this, "データ取得中。", Toast.LENGTH_SHORT).show();
 
                 //自分のデータを取りに行く
                 MyDate();
+
 
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").child(String.valueOf(calendar.get(Calendar.DATE))).getChildren()) {
@@ -211,8 +217,16 @@ public class StudentTimeline extends AppCompatActivity {
                     //Dataをとってくる
                     Object Data = postSnapshot.child("Data").getValue();
 
+                    Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",UID.toString());
+                    Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",myUID);
+
+                    //UIDの比較
+                    if(myUID.equals(UID.toString())){
+                        UIDmatch = true;
+                    }
                     //取得データのnullチェック
                     if(UID != null && Data != null) {
+
                         //UIDを元に名まえを取ってくる
                         Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
@@ -278,6 +292,33 @@ public class StudentTimeline extends AppCompatActivity {
                         });
                     }
                 }
+                //今日ログインしてなかったらログインを書き込みに行く
+                if(InBluetooth && !UIDmatch){
+                    Log.d("@@@@@@@@@@@@@@@@@@@@@@@@","aaaaaaaaaaaaaaaaaaaa");
+
+                    //データを書き込む
+                    //書き込む内容
+                    //UID
+                    Object postValuesUID = myUID;
+
+                    //今日の時間
+                    Object postValuesDate  = calendar.get(Calendar.HOUR_OF_DAY);
+                    postValuesDate = postValuesDate.toString() + ":" + calendar.get(Calendar.MINUTE);
+
+                    //インスタンス取得
+                    Map<String, Object> childUpdates = new HashMap<>();
+
+                    //当日以外のログインを消す
+                    //UID
+                    childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + postValuesDate.toString() + "/UID"  , postValuesUID);
+                    //日付
+                    childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + postValuesDate.toString() + "/Data", postValuesDate);
+
+                    //イベント実行
+                    mDatabase.updateChildren(childUpdates);
+
+                }
+
             }
             @Override
             //データがとりに行けなかった場合
@@ -442,7 +483,7 @@ public class StudentTimeline extends AppCompatActivity {
             }
             //ビーコンを見つけたらfirebaseにアクセスさせてステータスを書き換える
             if(Inivy) {
-                //書き込む内容
+                /*//書き込む内容
                 //UID
                 Object postValuesUID = myUID;
 
@@ -458,6 +499,18 @@ public class StudentTimeline extends AppCompatActivity {
                 childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + postValuesDate.toString() + "/UID"  , postValuesUID);
                 //日付
                 childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + postValuesDate.toString() + "/Data", postValuesDate);
+
+                //イベント実行
+                mDatabase.updateChildren(childUpdates);*/
+
+                Object postValuesDate  = calendar.get(Calendar.MILLISECOND);
+
+                InBluetooth = true;
+                //インスタンス取得
+                Map<String, Object> childUpdates = new HashMap<>();
+
+                //firebaseのイベントを強制的に発生させる
+                childUpdates.put("/InBluetooth", postValuesDate);
 
                 //イベント実行
                 mDatabase.updateChildren(childUpdates);
