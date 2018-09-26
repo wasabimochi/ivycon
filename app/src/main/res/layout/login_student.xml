@@ -21,7 +21,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="50dp"
         android:text="Mail Address"
         android:textSize="24sp"
@@ -33,13 +33,13 @@
         android:layout_width="293dp"
         android:layout_height="43dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="84dp"
         android:ems="10"
+        android:hint="メールアドレスを入力してください"
         android:inputType="textPersonName"
         android:text="taka@gmail.com"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="メールアドレスを入力してください"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
 
@@ -48,7 +48,7 @@
         android:layout_height="44dp"
         android:layout_marginEnd="136dp"
         android:layout_marginStart="136dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="272dp"
         android:text="ログイン"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,12 +62,11 @@
         android:id="@+id/teacher_login"
         android:layout_width="wrap_content"
         android:layout_height="26dp"
-        android:layout_marginBottom="70dp"
-        android:layout_marginLeft="129dp"
-        android:layout_marginStart="129dp"
-        android:text="管理者ログイン"
+        android:layout_marginBottom="100dp"
+        android:layout_marginStart="128dp"
         android:clickable="true"
         android:onClick="TeacherDepartmentMove"
+        android:text="管理者ログイン"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -76,7 +75,7 @@
         android:id="@+id/login_new_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="148dp"
         android:layout_marginStart="144dp"
         android:clickable="true"
         android:onClick="NewAccountMove"
@@ -88,7 +87,7 @@
     <TextView
         android:id="@+id/password_forget"
         android:layout_width="161dp"
-        android:layout_height="18dp"
+        android:layout_height="30dp"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="112dp"
         android:clickable="true"
@@ -102,13 +101,13 @@
         android:id="@+id/login_password"
         android:layout_width="292dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="204dp"
         android:ems="10"
+        android:hint="パスワードを入力してください"
         android:inputType="textPassword"
         android:text="abcde123"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:hint="パスワードを入力してください"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

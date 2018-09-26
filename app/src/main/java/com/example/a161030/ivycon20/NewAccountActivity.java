@@ -7,8 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -119,6 +122,32 @@ public class NewAccountActivity extends AppCompatActivity {
                 create();
             }
         });
+
+        //スピナーを登録
+        Spinner spinner = findViewById(R.id.new_department);
+
+        // android.R.Layout.simple_spinner_itemをR.layout.spinner_itemに変更
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.sample_array, R.layout.simple_spinner);
+        // spinner に adapter をセット
+        spinner.setAdapter(adapter);
+
+        //レイアウトを設定
+        adapter.setDropDownViewResource(R.layout.dropdown_spinner);
+
+        // リスナーを登録
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                String item = (String)spinner.getSelectedItem();
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
 
@@ -127,14 +156,36 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //登録する項目を取得する
         final EditText number = findViewById(R.id.new_number);
-        Spinner year = (Spinner)findViewById(R.id.new_year);
+
+        // Spinnerオブジェクトを取得
+        Spinner department = (Spinner)findViewById(R.id.new_department);
+
         // 選択されているアイテムのIndexを取得
-        final int year_idx = year.getSelectedItemPosition();
+        int department_idx = department.getSelectedItemPosition();
+
         // 選択されているアイテムを取得
-        String year_item = (String)year.getSelectedItem();
+        String department_item = (String)department.getSelectedItem();
+
+
+        Spinner year = (Spinner)findViewById(R.id.new_year);
+
+        // 選択されているアイテムのIndexを取得
+
+        final int year_idx = department.getSelectedItemPosition();
+
+        // 選択されているアイテムを取得
+        String year_item = (String)department.getSelectedItem();
+
+        //final int year_idx = year.getSelectedItemPosition();
+        // 選択されているアイテムを取得
+        //String year_item = (String)year.getSelectedItem();
+
         final EditText name = findViewById(R.id.new_name);
+
         EditText mail = findViewById(R.id.new_mail);
+
         EditText passwd = findViewById(R.id.new_password);
+
         EditText passwd_again = findViewById(R.id.password_again);
 
         //学籍番号がきちんと入力されていなければ
@@ -145,6 +196,44 @@ public class NewAccountActivity extends AppCompatActivity {
 
             return;
         }
+
+        //度の学科が選択されたか
+        if (department_idx == 0) {
+            department_item = "-LGhFa150qB3TQHMa5z7";
+        }else if(department_idx == 1){
+            department_item ="-LGhFWKgRIPC6jVByYip";
+        }else if(department_idx == 2){
+            department_item = "-LGhFRm-6N8LgqM9WU9V";
+        }else if(department_idx == 3){
+            department_item = "-LGhFIYgqwB2vnnOUBG8";
+        }else if(department_idx ==4){
+            department_item = "-LGhFbSuk3SdtaeE8CI5";
+        }else if(department_idx == 5){
+            department_item = "-LGhFXiLSgc8ga6gesSS";
+        }else if(department_idx == 6){
+            department_item = "-LGhFTfSP-dPpDOqZ_Gh";
+        }else if(department_idx == 7){
+            department_item = "-LGhFZjy3ZRKG_59GxWA";
+        }else if(department_idx == 8){
+            department_item = "-LGhFVJSogdEShwcrSlP";
+        }
+
+        //FireBaseのイベント
+        final String finalDepartment_item1 = department_item;
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Deparをとってくる
+                Depar = dataSnapshot.child("Ivycon2").child("Deper").child(finalDepartment_item1).getValue();
+                Log.w("きたああああああああああああああああああ",Depar.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("エラー", databaseError.toException());
+            }
+        });
 
         //現在のカレンダー取得
         Calendar calendar = Calendar.getInstance();
@@ -214,7 +303,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学籍番号
                     childUpdates.put("Num", number.getText().toString());
                     //学科
-                    childUpdates.put("Depar", department_item);
+                    childUpdates.put("Depar", finalDepartment_item);
                     //入学年
                     childUpdates.put("Year", String.valueOf(years - year_idx));
                     //名前

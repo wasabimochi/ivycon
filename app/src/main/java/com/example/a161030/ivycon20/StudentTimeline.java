@@ -1,6 +1,7 @@
 package com.example.a161030.ivycon20;
 
 import android.Manifest;
+import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -41,7 +42,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StudentTimeline extends AppCompatActivity {
+public class StudentTimeline extends AppCompatActivity{
 
     //リストビュー
     private ListView ListView;
