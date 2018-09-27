@@ -192,6 +192,7 @@ public class StudentMypageEdit extends AppCompatActivity {
                         //プロフィール
                         childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
 
+                        //////
                         //プロフィール
                         childUpdates.put("/Edit", NowMin);
 
