@@ -1,11 +1,13 @@
 package com.example.a161030.ivycon20;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -145,6 +147,11 @@ public class StudentTimeline extends AppCompatActivity{
                             startActivity(logout);
                             Log.d(TAG,"ログインしてない");
                         }
+                        break;
+
+                    case R.id.taikai:
+                        Intent intent = new Intent(getApplication(),Unsubscribe.class);
+                        startActivity(intent);
                         break;
 
                     default:
