@@ -139,6 +139,9 @@ public class StudentMypage extends AppCompatActivity {
                 //今の年
                 final int NowYear = cal.get(Calendar.YEAR);
 
+                //月の加算
+                cal.add(Calendar.MONTH,1);
+
                 //今の月
                 final int Month = cal.get(Calendar.MONTH);
 
@@ -168,7 +171,7 @@ public class StudentMypage extends AppCompatActivity {
 
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                 //画像の参照取得
-                spaceRef = storageRef.child("Image/Icon/" + UID + ".jpeg");
+                spaceRef = storageRef.child("Image/Icon/" + UID + "/" + UID + ".jpeg");
 
                 //メモリ
                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -200,10 +203,11 @@ public class StudentMypage extends AppCompatActivity {
         });
     }
 
+    //バックキーが押されたらこのActivityを殺す
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK) {
-            Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@","22222222222222222222222222222222222222");
+            Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@","@@@@@@@@@@@@@@@@@@@");
             finish();
             return super.onKeyDown(keyCode, event);
         } else {

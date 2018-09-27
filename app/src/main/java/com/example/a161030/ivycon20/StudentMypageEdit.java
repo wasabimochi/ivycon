@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,8 +144,8 @@ public class StudentMypageEdit extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //ストレージの参照                                       directory/directory/ファイル名
-                StorageReference mountainImagesRef = storageRef.child("Image/Icon/" + UID + ".jpeg");
-                StorageReference mountainImagesRef2 = storageRef.child("Image/Icon/" + UID + "_icon.jpeg");
+                StorageReference mountainImagesRef = storageRef.child("Image/Icon/" + UID + "/" + UID + ".jpeg");
+                StorageReference mountainImagesRef2 = storageRef.child("Image/Icon/" + UID + "/" + UID + "_icon.jpeg");
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
@@ -181,14 +182,19 @@ public class StudentMypageEdit extends AppCompatActivity {
                         //書き込む内容
                         Object prof = profile.getText().toString();
 
+                        //ミリ秒を入れて強制的にデータを取りに行かせる
+                        Calendar calendar = Calendar.getInstance();
+
+                        Object NowMin = calendar.get(Calendar.MILLISECOND);
                         //インスタンス取得
                         Map<String, Object> childUpdates = new HashMap<>();
 
-                        //UIDのrefの習得
-                        mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
-
                         //プロフィール
-                        childUpdates.put("Prof", profile.getText().toString());
+                        childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
+
+                        //////
+                        //プロフィール
+                        childUpdates.put("/Edit", NowMin);
 
                         //イベント実行
                         mDatabase.updateChildren(childUpdates);
@@ -234,6 +240,7 @@ public class StudentMypageEdit extends AppCompatActivity {
         }
     }
 
+    //バックキーが押されたらこのActivityを殺す
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK) {
