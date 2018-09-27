@@ -231,6 +231,7 @@ public class StudentMypageEdit extends AppCompatActivity {
         }
     }
 
+    //バックキーが押されたらこのActivityを殺す
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK) {

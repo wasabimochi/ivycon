@@ -95,22 +95,31 @@ public class NewAccountActivity extends AppCompatActivity {
                 switch (department_idx){
                     case 0:
                         department_item = "-LGhFa150qB3TQHMa5z7";
+                        break;
                     case 1:
                         department_item ="-LGhFWKgRIPC6jVByYip";
+                        break;
                     case 2:
                         department_item = "-LGhFRm-6N8LgqM9WU9V";
+                        break;
                     case 3:
                         department_item = "-LGhFIYgqwB2vnnOUBG8";
+                        break;
                     case 4:
                         department_item = "-LGhFbSuk3SdtaeE8CI5";
+                        break;
                     case 5:
                         department_item = "-LGhFXiLSgc8ga6gesSS";
+                        break;
                     case 6:
                         department_item = "-LGhFTfSP-dPpDOqZ_Gh";
+                        break;
                     case 7:
                         department_item = "-LGhFZjy3ZRKG_59GxWA";
+                        break;
                     case 8:
                         department_item = "-LGhFVJSogdEShwcrSlP";
+                        break;
                 }
             }
 
