@@ -104,7 +104,8 @@ public class TeacherGrade extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), TeacherStudent.class); //インテントの作成
-                intent.putExtra("Key" ,dep); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Depar" ,dep); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Year" ,year); //Activityに学年を引数として渡す
                 startActivity(intent);   //画面遷移
             }
         });
@@ -114,7 +115,8 @@ public class TeacherGrade extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), TeacherStudent.class); //インテントの作成
-                intent.putExtra("Key" ,dep); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Depar" ,dep); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Year" ,year); //Activityに学年を引数として渡す
                 startActivity(intent);   //画面遷移
             }
         });
@@ -124,7 +126,8 @@ public class TeacherGrade extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), TeacherStudent.class); //インテントの作成
-                intent.putExtra("Key" ,dep); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Depar" ,dep); //Activityに学科のIDを引数として渡す
+                intent.putExtra("Year" ,year); //Activityに学年を引数として渡す
                 startActivity(intent);   //画面遷移
             }
         });
