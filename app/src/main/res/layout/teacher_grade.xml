@@ -8,6 +8,7 @@
     tools:openDrawer="start"
     >
 
+<<<<<<< HEAD
     <android.support.design.widget.NavigationView
         android:id="@+id/teacher_grade_navigationview"
         android:layout_gravity="start"
@@ -45,3 +46,26 @@
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
+=======
+    <Button
+        android:id="@+id/grade_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1年"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/grade_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2年"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/grade_three"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="3年"
+        android:textSize="24sp" />
+</LinearLayout>
+>>>>>>> 0df738f0caee2cb976ccf1ef16b00137a785a798

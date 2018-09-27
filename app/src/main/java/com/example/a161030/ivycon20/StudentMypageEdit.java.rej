@@ -1,0 +1,9 @@
+diff a/app/src/main/java/com/example/a161030/ivycon20/StudentMypageEdit.java b/app/src/main/java/com/example/a161030/ivycon20/StudentMypageEdit.java	(rejected hunks)
+@@ -234,6 +234,7 @@
+         }
+     }
+ 
++    //バックキーが押されたらこのActivityを殺す
+     @Override
+     public boolean onKeyDown(int keyCode, KeyEvent event) {
+         if(keyCode == KeyEvent.KEYCODE_BACK) {
