@@ -29,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -181,11 +182,19 @@ public class StudentMypageEdit extends AppCompatActivity {
                         //書き込む内容
                         Object prof = profile.getText().toString();
 
+                        //ミリ秒を入れて強制的にデータを取りに行かせる
+                        Calendar calendar = Calendar.getInstance();
+
+                        Object NowMin = calendar.get(Calendar.MILLISECOND);
                         //インスタンス取得
                         Map<String, Object> childUpdates = new HashMap<>();
 
                         //プロフィール
                         childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
+
+                        //////
+                        //プロフィール
+                        childUpdates.put("/Edit", NowMin);
 
                         //イベント実行
                         mDatabase.updateChildren(childUpdates);
