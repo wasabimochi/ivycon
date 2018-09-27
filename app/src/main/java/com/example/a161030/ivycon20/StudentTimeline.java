@@ -370,7 +370,7 @@ public class StudentTimeline extends AppCompatActivity{
 
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                 //画像の参照取得
-                spaceRef = storageRef.child("Image/Icon/" + myUID + "_icon.jpeg");
+                spaceRef = storageRef.child("Image/Icon/" + myUID + "/" + myUID + "_icon.jpeg");
 
                 //メモリ
                 final long ONE_MEGABYTE = 1024 * 1024;

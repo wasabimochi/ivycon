@@ -184,11 +184,8 @@ public class StudentMypageEdit extends AppCompatActivity {
                         //インスタンス取得
                         Map<String, Object> childUpdates = new HashMap<>();
 
-                        //UIDのrefの習得
-                        mDatabase = mDatabase.child("Ivycon2").child("Student").child(UID).getRef();
-
                         //プロフィール
-                        childUpdates.put("Prof", profile.getText().toString());
+                        childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
 
                         //イベント実行
                         mDatabase.updateChildren(childUpdates);
