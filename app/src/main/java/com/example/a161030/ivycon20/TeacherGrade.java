@@ -1,16 +1,26 @@
 package com.example.a161030.ivycon20;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class TeacherGrade extends AppCompatActivity{
+
+    //FirebaseAuthオブジェクト作成
+    private FirebaseAuth mAuth;
 
     //学年判別変数
     int year;
@@ -18,10 +28,54 @@ public class TeacherGrade extends AppCompatActivity{
     //学科判別変数
     String dep;
 
+    //Logを使う時に必要
+    private final static String TAG = TeacherGrade.class.getSimpleName();
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_grade);
+
+        //FirebaseAuthオブジェクトの共有インスタンスを取得
+        mAuth = FirebaseAuth.getInstance();
+
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.teacher_grade_navigationview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                //ここまではいってる
+                switch (item.getItemId()) {
+
+                    case R.id.myPage:
+                        break;
+
+                    case R.id.logout:
+                        //ログアウト
+                        mAuth.signOut();
+
+                        //ユーザーの現在の状況を取得(ログインしているかなど)
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        //ログインしているかどうかの判定
+                        if (user != null) { //ログインしていればログを出すだけ
+                            Log.d(TAG,"ログインしてる");
+                        } else {            //ログインしていなければログを出しログイン画面に遷移する
+                            //アラートを表示
+                            Toast.makeText(TeacherGrade.this, "ログアウトしました。", Toast.LENGTH_SHORT).show();
+                            Intent logout = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
+                            startActivity(logout);
+                            finish();
+                            Log.d(TAG,"ログインしてない");
+                        }
+                        break;
+
+                        default:
+                        break;
+
+                }return false;
+            }
+        });
 
         //学年変数初期化
         year = 0;

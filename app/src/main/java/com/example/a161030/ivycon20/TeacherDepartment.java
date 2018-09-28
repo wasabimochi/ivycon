@@ -3,13 +3,22 @@ package com.example.a161030.ivycon20;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class TeacherDepartment extends AppCompatActivity {
 
+    //FirebaseAuthオブジェクト作成
+    private FirebaseAuth mAuth;
 
     //Logを使う時に必要
     private final static String TAG = TeacherDepartment.class.getSimpleName();
@@ -21,15 +30,55 @@ public class TeacherDepartment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_department);
 
-        //医療情報学科
-        findViewById(R.id.MI).setOnClickListener(new View.OnClickListener() {
+        //FirebaseAuthオブジェクトの共有インスタンスを取得
+        mAuth = FirebaseAuth.getInstance();
+
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.teacher_department_navigationview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), TeacherGrade.class); //インテントの作成
-                intent.putExtra("Key" ,"MI"); //Activityに学科のIDを引数として渡す
-                startActivity(intent);   //画面遷移
-            }
+            public boolean onNavigationItemSelected(MenuItem item) {
+                //ここまではいってる
+                switch (item.getItemId()) {
+
+                    case R.id.myPage:
+                        break;
+
+                    case R.id.logout:
+                        //ログアウト
+                        mAuth.signOut();
+
+                        //ユーザーの現在の状況を取得(ログインしているかなど)
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        //ログインしているかどうかの判定
+                        if (user != null) { //ログインしていればログを出すだけ
+                            Log.d(TAG, "ログインしてる");
+                        } else {            //ログインしていなければログを出しログイン画面に遷移する
+                            //アラートを表示
+                            Toast.makeText(TeacherDepartment.this, "ログアウトしました。", Toast.LENGTH_SHORT).show();
+                            Intent logout = new Intent(getApplication(), LoginStudent.class);    //インテントの作成
+                            startActivity(logout);
+                            finish();
+                            Log.d(TAG, "ログインしてない");
+                        }
+                        break;
+
+                        default:
+                        break;
+                }
+                    return false;
+                }
         });
+
+                //医療情報学科
+                findViewById(R.id.MI).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getApplication(), TeacherGrade.class); //インテントの作成
+                        intent.putExtra("Key", "MI"); //Activityに学科のIDを引数として渡す
+                        startActivity(intent);   //画面遷移
+                    }
+                });
 
         //インターネット学科
         findViewById(R.id.IN).setOnClickListener(new View.OnClickListener() {
