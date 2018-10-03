@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class TeacherGrade extends AppCompatActivity{
 
@@ -80,6 +83,11 @@ public class TeacherGrade extends AppCompatActivity{
         //学年変数初期化
         year = 0;
 
+        //現在のカレンダー取得
+        Calendar calendar = Calendar.getInstance();
+        //年を取得
+        final int years = calendar.get(Calendar.YEAR);
+
         //ボタンのインスタンス生成
         Button grade_one = findViewById(R.id.grade_one);
         Button grade_two = findViewById(R.id.grade_two);
@@ -97,39 +105,39 @@ public class TeacherGrade extends AppCompatActivity{
         //選択された学科によって学年変数の値を決める
         switch (depar){
             case  "MI":
-                year = 3;
+                year = years - 2;
                 dep = "-LGhFa150qB3TQHMa5z7";
                 break;
             case "IN":
-                year = 3;
+                year = years - 2;
                 dep = "-LGhFWKgRIPC6jVByYip";
                 break;
             case "CG":
-                year = 3;
+                year = years - 2;
                 dep = "-LGhFRm-6N8LgqM9WU9V";
                 break;
             case "CAD":
-                year = 3;
+                year = years - 2;
                 dep = "-LGhFIYgqwB2vnnOUBG8";
                 break;
             case "OB":
-                year = 2;
+                year = years - 1;
                 dep = "-LGhFbSuk3SdtaeE8CI5";
                 break;
             case "IS":
-                year = 2;
+                year = years - 1;
                 dep = "-LGhFXiLSgc8ga6gesSS";
                 break;
             case "CS":
-                year = 1;
+                year = years;
                 dep = "-LGhFTfSP-dPpDOqZ_Gh";
                 break;
             case "MB":
-                year = 2;
+                year = years - 1;
                 dep = "-LGhFZjy3ZRKG_59GxWA";
                 break;
             case "IM":
-                year = 3;
+                year = years - 2;
                 dep = "-LGhFVJSogdEShwcrSlP";
                 break;
         }
@@ -157,9 +165,12 @@ public class TeacherGrade extends AppCompatActivity{
         findViewById(R.id.grade_one).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //グローバル変数クラス
+                UtilCommon common = (UtilCommon)getApplication();
+                year = years;   //入学年を渡す
                 Intent intent = new Intent(getApplication(), TeacherStudent.class); //インテントの作成
-                intent.putExtra("Depar" ,dep); //Activityに学科のIDを引数として渡す
-                intent.putExtra("Year" ,year); //Activityに学年を引数として渡す
+                common.setDepar(dep);
+                common.setTyear(year);
                 startActivity(intent);   //画面遷移
             }
         });
@@ -168,9 +179,14 @@ public class TeacherGrade extends AppCompatActivity{
         findViewById(R.id.grade_two).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //グローバル変数クラス
+                UtilCommon common = (UtilCommon)getApplication();
+
+                year = years - 1;   //入学年を渡す
                 Intent intent = new Intent(getApplication(), TeacherStudent.class); //インテントの作成
-                intent.putExtra("Depar" ,dep); //Activityに学科のIDを引数として渡す
-                intent.putExtra("Year" ,year); //Activityに学年を引数として渡す
+                common.setDepar(dep);
+                common.setTyear(year);
+
                 startActivity(intent);   //画面遷移
             }
         });
@@ -179,9 +195,14 @@ public class TeacherGrade extends AppCompatActivity{
         findViewById(R.id.grade_three).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //グローバル変数クラス
+                UtilCommon common = (UtilCommon)getApplication();
+
+                year = years - 2;   //入学年を渡す
                 Intent intent = new Intent(getApplication(), TeacherStudent.class); //インテントの作成
-                intent.putExtra("Depar" ,dep); //Activityに学科のIDを引数として渡す
-                intent.putExtra("Year" ,year); //Activityに学年を引数として渡す
+                common.setDepar(dep);
+                common.setTyear(year);
+
                 startActivity(intent);   //画面遷移
             }
         });
