@@ -2,16 +2,17 @@ package com.example.a161030.ivycon20;
 
 import android.graphics.Bitmap;
 
-public class StudentListItem {
+public class TeacherStudentListItem {
 
     private Bitmap mThumbnail = null;
     private String mTitle = null;
     private String mUID = null;
+    private Bitmap mLogin = null;
 
     /**
      * 空のコンストラクタ
      */
-    public StudentListItem() {};
+    public TeacherStudentListItem() {};
 
     /**
      * コンストラクタ
@@ -19,10 +20,11 @@ public class StudentListItem {
      * @param title タイトル
      * @param UID UID
      */
-    public StudentListItem(Bitmap thumbnail, String title, String UID) {
+    public TeacherStudentListItem(Bitmap thumbnail, String title, String UID, Bitmap Login) {
         mThumbnail = thumbnail;
         mTitle = title;
         mUID = UID;
+        mLogin = Login;
     }
 
     /**
@@ -39,6 +41,14 @@ public class StudentListItem {
      */
     public void setmTitle(String title) {
         mTitle = title;
+    }
+
+    /**
+     * タイトルを設定
+     * @param Login ログイン情報
+     */
+    public void setmLogin(Bitmap Login) {
+        mLogin = Login;
     }
 
     /**
@@ -60,9 +70,18 @@ public class StudentListItem {
 
     /**
      * UIDを取得
-     * @return UID
+     * @return UIDの情報
      */
     public String getUID() {
         return mUID;
     }
+
+    /**
+     * ログイン情報を取得
+     * @return ログインの情報
+     */
+    public Bitmap getLogin() {
+        return mLogin;
+    }
+
 }
