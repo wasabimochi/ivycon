@@ -174,6 +174,19 @@ public class TeacherDepartment extends AppCompatActivity {
         }
     }
 
+    /*/バックキーが押されたらこのActivityを殺す
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_HOME) {
+            //ホームボタンが押された時や、他のアプリが起動した時に呼ばれる
+            //戻るボタンが押された場合には呼ばれない
+            //ホームボタンが押されたら強制的にログアウトする
+            Toast.makeText(getApplicationContext(), "Good bye!" , Toast.LENGTH_SHORT).show();
+            mAuth.signOut();
+            finish();
+        }
+    }
+
     @Override
     public void onUserLeaveHint(){
         //ホームボタンが押された時や、他のアプリが起動した時に呼ばれる
@@ -182,5 +195,5 @@ public class TeacherDepartment extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Good bye!" , Toast.LENGTH_SHORT).show();
         mAuth.signOut();
         finish();
-    }
+    }*/
 }

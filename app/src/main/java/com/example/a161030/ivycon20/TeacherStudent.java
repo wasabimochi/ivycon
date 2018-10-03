@@ -2,8 +2,6 @@ package com.example.a161030.ivycon20;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-<<<<<<< HEAD
-=======
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,7 +9,6 @@ import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
->>>>>>> feature/fix_techer
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,17 +16,12 @@ import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-<<<<<<< HEAD
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-=======
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
->>>>>>> feature/fix_techer
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,71 +32,12 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-<<<<<<< HEAD
-=======
 import java.util.HashMap;
->>>>>>> feature/fix_techer
 import java.util.List;
 import java.util.Map;
 
 public class TeacherStudent extends AppCompatActivity {
 
-<<<<<<< HEAD
-    //String[] students = {"hirose","takakura","kugimiya","yoshida"};
-    ArrayList<String> students = new ArrayList<String>();
-
-    //リストビュー
-    private ListView ListView;
-
-    //リスト
-    private ArrayList<StudentListItem> listItems = new ArrayList<>();
-
-    //レイアウト
-    private ArrayAdapter<String> arrayAdapter;
-
-    //オリジナルのアダプター
-    private StudentListAdapter Adapter;
-
-    //FirebaseAuthオブジェクト作成
-    private FirebaseAuth mAuth;
-
-    //DatabaseReferenceオブジェクト作成
-    private DatabaseReference mDatabase;
-
-    //FireBaseストレージ
-    private FirebaseStorage storage;
-
-    //ストレージ
-    private StorageReference storageRef;
-
-    //画像の参照取得
-    private StorageReference spaceRef;
-
-    //サムネイルのビットマップ
-    private Bitmap Thumbnail;
-
-    //入室リスト配列
-    private ArrayList<String> inDate = new ArrayList<>();
-
-    //生徒のリスト配列
-    private ArrayList<String> sName = new ArrayList<>();
-
-    //生徒のUIDのリスト配列
-    private ArrayList<String> sUID = new ArrayList<>();
-
-    //カウント変数
-    private int Count = 0;
-
-    //Logを使う時に必要
-    private final static String TAG = StudentTimeline.class.getSimpleName();
-
-    //ユーザーID取得変数
-    private String myUID;
-
-    //今日の日付
-    Calendar calendar;
-
-=======
     //リストビュー
     ListView ListView;
 
@@ -126,6 +59,8 @@ public class TeacherStudent extends AppCompatActivity {
     //FireBaseストレージ
     private FirebaseStorage storage;
 
+    //ログインデータ
+    private FirebaseAuth mAuth;
     //ストレージ
     private StorageReference storageRef;
 
@@ -158,7 +93,6 @@ public class TeacherStudent extends AppCompatActivity {
 
     //フラグ
     private boolean Flag = false;
->>>>>>> feature/fix_techer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,10 +105,15 @@ public class TeacherStudent extends AppCompatActivity {
         // タップ時のイベントを追加
         //ListView.setOnItemClickListener(onItemClickListener);
 
-<<<<<<< HEAD
-        //前のアクティビティで渡された値を学科変数に代入
-        String depar = extras.getString("Depar");
-        int year = extras.getInt("Year");
+        //グローバル変数クラス
+        UtilCommon common = (UtilCommon)getApplication();
+
+        depar = common.getDepar();
+        int y = common.getTyear();
+        year = String.valueOf(y);
+
+        //今日の日付
+        calendar = Calendar.getInstance();
 
         //FirebaseAuthオブジェクトの共有インスタンスを取得
         mAuth = FirebaseAuth.getInstance();
@@ -187,49 +126,6 @@ public class TeacherStudent extends AppCompatActivity {
 
         //ストレージへの参照
         storageRef = storage.getReference();
-
-        ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
-        //FireBaseのイベント
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
-                for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Student").getChildren()) {
-
-                    //UIDをとってくる
-                    Object UID = postSnapshot.child("UID").getValue();
-                }
-            }
-
-            @Override
-            //データがとりに行けなかった場合
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(TeacherStudent.this, "データが取得できませんでした", Toast.LENGTH_SHORT).show();
-                Log.w("エラー", databaseError.toException());
-            }
-        });
-=======
-        //Databaseへの参照取得
-        mDatabase = FirebaseDatabase.getInstance().getReference();
->>>>>>> feature/fix_techer
-
-        //FireBaseストレージへのアクセスインスタンス
-        storage = FirebaseStorage.getInstance();
-
-        //ストレージへの参照
-        storageRef = storage.getReference();
-
-        //グローバル変数クラス
-        UtilCommon common = (UtilCommon)getApplication();
-
-        depar = common.getDepar();
-        int y = common.getTyear();
-
-        year = String.valueOf(y);
-
-        //今日の日付
-        calendar = Calendar.getInstance();
 
         ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
         //FireBaseのイベント
