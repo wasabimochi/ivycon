@@ -5,10 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    >
+    tools:openDrawer="start">
 
-<<<<<<< HEAD
     <android.support.design.widget.NavigationView
         android:id="@+id/teacher_grade_navigationview"
         android:layout_gravity="start"
@@ -17,36 +15,6 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="1年"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/button5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2年"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/button6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="3年"
-            android:textSize="24sp" />
-
-    </LinearLayout>
-
-</android.support.v4.widget.DrawerLayout>
-=======
     <Button
         android:id="@+id/grade_one"
         android:layout_width="match_parent"
@@ -67,5 +35,5 @@
         android:layout_height="wrap_content"
         android:text="3年"
         android:textSize="24sp" />
-</LinearLayout>
->>>>>>> 0df738f0caee2cb976ccf1ef16b00137a785a798
+
+</android.support.v4.widget.DrawerLayout>

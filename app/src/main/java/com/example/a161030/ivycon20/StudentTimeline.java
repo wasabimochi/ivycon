@@ -46,6 +46,9 @@ import java.util.Map;
 
 public class StudentTimeline extends AppCompatActivity{
 
+    //ユーザー情報
+    public static FirebaseUser user ;
+
     //リストビュー
     private ListView ListView;
 
@@ -121,7 +124,6 @@ public class StudentTimeline extends AppCompatActivity{
                 //ここまではいってる
                 switch (menuItem.getItemId()) {
                     case R.id.myPage:
-
                         //インテントの作成
                         Intent myPage = new Intent(getApplication(),StudentMypage.class);
                         startActivity(myPage);
@@ -134,7 +136,7 @@ public class StudentTimeline extends AppCompatActivity{
                         mAuth.signOut();
 
                         //ユーザーの現在の状況を取得(ログインしているかなど)
-                        FirebaseUser user = mAuth.getCurrentUser();
+                        user = mAuth.getCurrentUser();
 
                         //ログインしているかどうかの判定
                         if (user != null) { //ログインしていればログを出すだけ
@@ -149,8 +151,9 @@ public class StudentTimeline extends AppCompatActivity{
                         break;
 
                     case R.id.taikai:
-                        Intent intent = new Intent(getApplication(),Unsubscribe.class);
-                        startActivity(intent);
+                        user = mAuth.getCurrentUser();
+                        Intent taikai = new Intent(getApplication(),Unsubscribe.class);
+                        startActivity(taikai);
                         break;
 
                     default:
