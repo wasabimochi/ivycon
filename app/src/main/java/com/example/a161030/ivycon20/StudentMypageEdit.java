@@ -150,61 +150,89 @@ public class StudentMypageEdit extends AppCompatActivity {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
 
-                img2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                Thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos2);
-                byte[] data = baos.toByteArray();
-                byte[] data2 = baos2.toByteArray();
+                if(img != null && Thumbnail != null) {
+                    img2.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    Thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, baos2);
+                    byte[] data = baos.toByteArray();
+                    byte[] data2 = baos2.toByteArray();
 
 
-                UploadTask uploadTask = mountainImagesRef.putBytes(data);
-                UploadTask uploadTask2 = mountainImagesRef2.putBytes(data2);
+                    UploadTask uploadTask = mountainImagesRef.putBytes(data);
+                    UploadTask uploadTask2 = mountainImagesRef2.putBytes(data2);
 
-                // Register observers to listen for when the download is done or if it fails
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        Log.w("アップロード","失敗");
+                    // Register observers to listen for when the download is done or if it fails
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Log.w("アップロード", "失敗");
 
-                        //アラートを表示
-                        Toast.makeText(StudentMypageEdit.this, "更新に失敗しました。", Toast.LENGTH_SHORT).show();
+                            //アラートを表示
+                            Toast.makeText(StudentMypageEdit.this, "更新に失敗しました。", Toast.LENGTH_SHORT).show();
 
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                        Log.w("アップロード","成功");
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                            Log.w("アップロード", "成功");
 
-                        //登録する項目を取得する
-                        final EditText profile = findViewById(R.id.profile_edit);
+                            //登録する項目を取得する
+                            final EditText profile = findViewById(R.id.profile_edit);
 
-                        //書き込む内容
-                        Object prof = profile.getText().toString();
+                            //書き込む内容
+                            Object prof = profile.getText().toString();
 
-                        //ミリ秒を入れて強制的にデータを取りに行かせる
-                        Calendar calendar = Calendar.getInstance();
+                            //ミリ秒を入れて強制的にデータを取りに行かせる
+                            Calendar calendar = Calendar.getInstance();
 
-                        Object NowMin = calendar.get(Calendar.MILLISECOND);
-                        //インスタンス取得
-                        Map<String, Object> childUpdates = new HashMap<>();
+                            Object NowMin = calendar.get(Calendar.MILLISECOND);
+                            //インスタンス取得
+                            Map<String, Object> childUpdates = new HashMap<>();
 
-                        //プロフィール
-                        childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
+                            //プロフィール
+                            childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
 
-                        //////
-                        //プロフィール
-                        childUpdates.put("/Edit", NowMin);
+                            //////
+                            //プロフィール
+                            childUpdates.put("/Edit", NowMin);
 
-                        //イベント実行
-                        mDatabase.updateChildren(childUpdates);
+                            //イベント実行
+                            mDatabase.updateChildren(childUpdates);
 
-                        Toast.makeText(StudentMypageEdit.this, "更新しました", Toast.LENGTH_SHORT).show();
-                        // ...
+                            Toast.makeText(StudentMypageEdit.this, "更新しました", Toast.LENGTH_SHORT).show();
+                            // ...
 
-                        finish();
-                    }
-                });
+                            finish();
+                        }
+                    });
+                }else{
+                    //登録する項目を取得する
+                    final EditText profile = findViewById(R.id.profile_edit);
+
+                    //書き込む内容
+                    Object prof = profile.getText().toString();
+
+                    //ミリ秒を入れて強制的にデータを取りに行かせる
+                    Calendar calendar = Calendar.getInstance();
+
+                    Object NowMin = calendar.get(Calendar.MILLISECOND);
+                    //インスタンス取得
+                    Map<String, Object> childUpdates = new HashMap<>();
+
+                    //プロフィール
+                    childUpdates.put("/Ivycon2/Student/" + UID + "/Prof", prof);
+
+                    //プロフィール
+                    childUpdates.put("/Edit", NowMin);
+
+                    //イベント実行
+                    mDatabase.updateChildren(childUpdates);
+
+                    Toast.makeText(StudentMypageEdit.this, "更新しました", Toast.LENGTH_SHORT).show();
+
+                    finish();
+                }
             }
         });
 
