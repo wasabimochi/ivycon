@@ -142,7 +142,7 @@ public class OtherPage extends AppCompatActivity {
 
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
                 //画像の参照取得
-                spaceRef = storageRef.child("Image/Icon/" + common.getothersUID() + ".jpeg");
+                spaceRef = storageRef.child("Image/Icon/" + common.getothersUID() + "/" + common.getothersUID() +".jpeg");
 
                 //メモリ
                 final long ONE_MEGABYTE = 1024 * 1024;

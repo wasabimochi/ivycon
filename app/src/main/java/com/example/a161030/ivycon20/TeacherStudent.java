@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -103,7 +105,7 @@ public class TeacherStudent extends AppCompatActivity {
         ListView = (ListView) findViewById(R.id.TeacherView);
 
         // タップ時のイベントを追加
-        //ListView.setOnItemClickListener(onItemClickListener);
+        ListView.setOnItemClickListener(onItemClickListener);
 
         //グローバル変数クラス
         UtilCommon common = (UtilCommon)getApplication();
@@ -321,5 +323,29 @@ public class TeacherStudent extends AppCompatActivity {
         //アダプターの設定
         Adapter = new TecherStudentListAdapter(this, R.layout.teacher_student_item, listItems);
     }
+
+    //タップイベント
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // タップしたアイテムの取得
+            ListView listView = (ListView)parent;
+
+            // TeacherStudentListItemにキャスト
+            TeacherStudentListItem item = (TeacherStudentListItem)listView.getItemAtPosition(position);
+
+            //グローバル変数クラス
+            UtilCommon common = (UtilCommon)getApplication();
+
+            //タップしたところのUIDを取ってグローバルに設定
+            common.setothersUID(item.getUID());
+
+            //インテントの作成
+            Intent intent = new Intent(getApplication(), OtherPage.class);
+
+            //画面遷移
+            startActivity(intent);
+        }
+    };
 
 }
