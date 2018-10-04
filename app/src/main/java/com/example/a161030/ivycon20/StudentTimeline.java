@@ -236,10 +236,11 @@ public class StudentTimeline extends AppCompatActivity{
                         UIDmatch = true;
                     }
                     //取得データのnullチェック
-                    if(UID != null && Data != null) {
 
                         //UIDを元に名まえを取ってくる
                         Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
+                    if(UID != null && Data != null &&  StudentName
+                            != null) {
 
                         //リストに格納
                         sUID.add(UID.toString());
