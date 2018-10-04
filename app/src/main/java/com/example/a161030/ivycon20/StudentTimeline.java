@@ -228,9 +228,6 @@ public class StudentTimeline extends AppCompatActivity{
                     //Dataをとってくる
                     Object Data = postSnapshot.child("Data").getValue();
 
-                    Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",UID.toString());
-                    Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",myUID);
-
                     //取得データのnullチェック
                     if(UID != null && Data != null) {
                         //UIDの比較
@@ -260,18 +257,11 @@ public class StudentTimeline extends AppCompatActivity{
                                 @Override
                                 public void onSuccess(byte[] bytes) {
 
+                                    int Listsize = sName.size();
                                     //sizeチェック
-                                    if (Count < sName.size()) {
+                                    if (Count < Listsize) {
                                         //サムネイル画像取得
                                         Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                                        String s = String.valueOf(Count);
-                                        String size = String.valueOf(sUID.size());
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", s);
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@size", size);
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sUID", sUID.get(Count));
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@inDate", inDate.get(Count));
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sName", sName.get(Count));
 
                                         //リストアイテム作成
                                         StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
@@ -287,6 +277,8 @@ public class StudentTimeline extends AppCompatActivity{
 
                                             //リストビュー作成
                                             ListView.setAdapter(Adapter);
+
+                                            Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", "完成");
 
                                         }
                                     }
@@ -297,17 +289,11 @@ public class StudentTimeline extends AppCompatActivity{
                                     // Handle any errors
 
                                     //sizeチェック
-                                    if (Count < sName.size()) {
+                                    int Listsize = sName.size();
+                                    //sizeチェック
+                                    if (Count < Listsize) {
                                         //デフォルト画像のビットマップ
                                         Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-                                        String s = String.valueOf(Count);
-                                        String size = String.valueOf(sUID.size());
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", s);
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@size", size);
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sUID", sUID.get(Count));
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@inDate", inDate.get(Count));
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sName", sName.get(Count));
 
                                         //リストアイテム作成
                                         StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
@@ -323,6 +309,9 @@ public class StudentTimeline extends AppCompatActivity{
 
                                             //リストビュー作成
                                             ListView.setAdapter(Adapter);
+
+                                            Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", "完成");
+
                                         }
                                     }
                                 }
@@ -332,7 +321,6 @@ public class StudentTimeline extends AppCompatActivity{
                 }
                 //今日ログインしてなかったらログインを書き込みに行く
                 if(InBluetooth && !UIDmatch){
-                    Log.d("@@@@@@@@@@@@@@@@@@@@@@@@","aaaaaaaaaaaaaaaaaaaa");
 
                     //データを書き込む
                     //書き込む内容
