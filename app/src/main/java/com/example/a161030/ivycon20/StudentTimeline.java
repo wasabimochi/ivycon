@@ -231,76 +231,103 @@ public class StudentTimeline extends AppCompatActivity{
                     Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",UID.toString());
                     Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",myUID);
 
-                    //UIDの比較
-                    if(myUID.equals(UID.toString())){
-                        UIDmatch = true;
-                    }
                     //取得データのnullチェック
                     if(UID != null && Data != null) {
+                        //UIDの比較
+                        if(myUID.equals(UID.toString())){
+                            UIDmatch = true;
+                        }
 
                         //UIDを元に名まえを取ってくる
                         Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
-                        //リストに格納
-                        sUID.add(UID.toString());
-                        sName.add(StudentName.toString());
-                        inDate.add(Data.toString());
+                        //nullチェック
+                        if(StudentName != null) {
+                            //リストに格納
+                            sUID.add(UID.toString());
+                            sName.add(StudentName.toString());
+                            inDate.add(Data.toString());
 
-                        ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
-                        //画像の参照取得
-                        spaceRef = storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg");
+                            ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                            //画像の参照取得
+                            spaceRef = storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg");
 
-                        //メモリ
-                        final long ONE_MEGABYTE = 1024 * 1024;
+                            //メモリ
+                            final long ONE_MEGABYTE = 1024 * 1024;
 
-                        //ストレージイベント
-                        spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                //サムネイル画像取得
-                                Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                            //ストレージイベント
+                            spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
 
-                                //リストアイテム作成
-                                StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
+                                    //sizeチェック
+                                    if (Count < sName.size()) {
+                                        //サムネイル画像取得
+                                        Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                                //リストに追加
-                                listItems.add(TimelineObject);
+                                        String s = String.valueOf(Count);
+                                        String size = String.valueOf(sUID.size());
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", s);
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@size", size);
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sUID", sUID.get(Count));
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@inDate", inDate.get(Count));
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sName", sName.get(Count));
 
-                                Count++;
+                                        //リストアイテム作成
+                                        StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
 
-                                if (Count == sName.size()) {
-                                    //呼出し
-                                    OriginalAdapter();
+                                        //リストに追加
+                                        listItems.add(TimelineObject);
 
-                                    //リストビュー作成
-                                    ListView.setAdapter(Adapter);
+                                        Count++;
 
+                                        if (Count == sName.size()) {
+                                            //呼出し
+                                            OriginalAdapter();
+
+                                            //リストビュー作成
+                                            ListView.setAdapter(Adapter);
+
+                                        }
+                                    }
                                 }
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                // Handle any errors
-                                //デフォルト画像のビットマップ
-                                Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
 
-                                //リストアイテム作成
-                                StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
+                                    //sizeチェック
+                                    if (Count < sName.size()) {
+                                        //デフォルト画像のビットマップ
+                                        Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
-                                //リストに追加
-                                listItems.add(TimelineObject);
+                                        String s = String.valueOf(Count);
+                                        String size = String.valueOf(sUID.size());
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", s);
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@size", size);
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sUID", sUID.get(Count));
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@inDate", inDate.get(Count));
+                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@sName", sName.get(Count));
 
-                                Count++;
+                                        //リストアイテム作成
+                                        StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
 
-                                if (Count == sName.size()) {
-                                    //呼出し
-                                    OriginalAdapter();
+                                        //リストに追加
+                                        listItems.add(TimelineObject);
 
-                                    //リストビュー作成
-                                    ListView.setAdapter(Adapter);
+                                        Count++;
+
+                                        if (Count == sName.size()) {
+                                            //呼出し
+                                            OriginalAdapter();
+
+                                            //リストビュー作成
+                                            ListView.setAdapter(Adapter);
+                                        }
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
                     }
                 }
                 //今日ログインしてなかったらログインを書き込みに行く
