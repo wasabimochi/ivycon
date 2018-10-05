@@ -67,14 +67,6 @@ public class StudentTimeline extends AppCompatActivity{
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
 
-    //FireBaseストレージ
-    private FirebaseStorage storage;
-
-    //ストレージ
-    private StorageReference storageRef;
-
-    //画像の参照取得
-    private StorageReference spaceRef;
 
     //サムネイルのビットマップ
     private Bitmap Thumbnail;
@@ -108,7 +100,10 @@ public class StudentTimeline extends AppCompatActivity{
     private String myUID;
 
     //今日の日付
-    Calendar calendar;
+    private Calendar calendar;
+
+    //画像の参照取得
+    private ArrayList<StorageReference> spaceRef = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,11 +174,6 @@ public class StudentTimeline extends AppCompatActivity{
         //Databaseへの参照取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        //FireBaseストレージへのアクセスインスタンス
-        storage = FirebaseStorage.getInstance();
-
-        //ストレージへの参照
-        storageRef = storage.getReference();
 
         //Listを作る
         ListView = (ListView) findViewById(R.id.ListView);
@@ -246,22 +236,28 @@ public class StudentTimeline extends AppCompatActivity{
                             inDate.add(Data.toString());
 
                             ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                            //FireBaseストレージ
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                            //ストレージ
+                            StorageReference storageRef = storage.getReference();
+
                             //画像の参照取得
-                            spaceRef = storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg");
+                            spaceRef.add(storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg"));
 
                             //メモリ
-                            final long ONE_MEGABYTE = 1024 * 1024;
+                            //final long ONE_MEGABYTE = 1024 * 1024;
 
                             //ストレージイベント
-                            spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            /*spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                 @Override
                                 public void onSuccess(byte[] bytes) {
-
                                     int Listsize = sName.size();
                                     //sizeチェック
                                     if (Count < Listsize) {
                                         //サムネイル画像取得
                                         Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
 
                                         //リストアイテム作成
                                         StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
@@ -278,7 +274,6 @@ public class StudentTimeline extends AppCompatActivity{
                                             //リストビュー作成
                                             ListView.setAdapter(Adapter);
 
-                                            Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", "完成");
 
                                         }
                                     }
@@ -310,12 +305,11 @@ public class StudentTimeline extends AppCompatActivity{
                                             //リストビュー作成
                                             ListView.setAdapter(Adapter);
 
-                                            Log.d("@@@@@@@@@@@@@@@@@@@@@@@@Count", "完成");
 
                                         }
                                     }
                                 }
-                            });
+                            });*/
                         }
                     }
                 }
@@ -344,7 +338,8 @@ public class StudentTimeline extends AppCompatActivity{
                     mDatabase.updateChildren(childUpdates);
 
                 }
-
+                //サムネイル取得
+                getThumnail();
             }
             @Override
             //データがとりに行けなかった場合
@@ -394,8 +389,14 @@ public class StudentTimeline extends AppCompatActivity{
                 NameView.setText(Name.toString());
 
                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                //FireBaseストレージ
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                //ストレージ
+                StorageReference storageRef = storage.getReference();
+
                 //画像の参照取得
-                spaceRef = storageRef.child("Image/Icon/" + myUID + "/" + myUID + "_icon.jpeg");
+                StorageReference spaceRef = storageRef.child("Image/Icon/" + myUID + "/" + myUID + "_icon.jpeg");
 
                 //メモリ
                 final long ONE_MEGABYTE = 1024 * 1024;
@@ -428,7 +429,80 @@ public class StudentTimeline extends AppCompatActivity{
 
     }
 
-    //intデータを 2桁16進数に変換するメソッド
+    //サムネイル取得
+    private void getThumnail() {
+        int Listsize = spaceRef.size();
+        if(Count < Listsize) {
+            final long ONE_MEGABYTE = 1024 * 1024;
+            //ストレージイベント
+            spaceRef.get(Count).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    int Listsize = sName.size();
+                    //sizeチェック
+                    if (Count < Listsize) {
+                        //サムネイル画像取得
+                        Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+
+                        //リストアイテム作成
+                        StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
+
+                        //リストに追加
+                        listItems.add(TimelineObject);
+
+                        Count++;
+
+                        getThumnail();
+
+                        if (Count == sName.size()) {
+                            //呼出し
+                            OriginalAdapter();
+
+                            //リストビュー作成
+                            ListView.setAdapter(Adapter);
+
+
+                        }
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+
+                    //sizeチェック
+                    int Listsize = sName.size();
+                    //sizeチェック
+                    if (Count < Listsize) {
+                        //デフォルト画像のビットマップ
+                        Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+                        //リストアイテム作成
+                        StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
+
+                        //リストに追加
+                        listItems.add(TimelineObject);
+
+                        Count++;
+
+                        getThumnail();
+
+                        if (Count == sName.size()) {
+                            //呼出し
+                            OriginalAdapter();
+
+                            //リストビュー作成
+                            ListView.setAdapter(Adapter);
+
+
+                        }
+                    }
+                }
+            });
+        }
+    }
+        //intデータを 2桁16進数に変換するメソッド
     public String IntToHex2(int i) {
         char hex_2[] = {Character.forDigit((i >> 4) & 0x0f, 16), Character.forDigit(i & 0x0f, 16)};
         String hex_2_str = new String(hex_2);

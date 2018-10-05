@@ -58,16 +58,8 @@ public class TeacherStudent extends AppCompatActivity {
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
 
-    //FireBaseストレージ
-    private FirebaseStorage storage;
-
     //ログインデータ
     private FirebaseAuth mAuth;
-    //ストレージ
-    private StorageReference storageRef;
-
-    //画像の参照取得
-    private StorageReference spaceRef;
 
     //生徒のリスト配列
     private ArrayList<String> sName = new ArrayList<>();
@@ -96,6 +88,9 @@ public class TeacherStudent extends AppCompatActivity {
     //フラグ
     private boolean Flag = false;
 
+    //画像の参照取得
+    private ArrayList<StorageReference> spaceRef = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,12 +117,6 @@ public class TeacherStudent extends AppCompatActivity {
 
         //Databaseへの参照取得
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        //FireBaseストレージへのアクセスインスタンス
-        storage = FirebaseStorage.getInstance();
-
-        //ストレージへの参照
-        storageRef = storage.getReference();
 
         ////////////////////////////FireBaseのデータの取得処理//////////////////////////////////
         //FireBaseのイベント
@@ -175,8 +164,6 @@ public class TeacherStudent extends AppCompatActivity {
                             //UIDの比較
                             //取得データのnullチェック
                             if (UID != null && StudentName != null) {
-                                Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@UID", UID.toString());
-                                Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@NAME", StudentName.toString());
 
                                 //リストに格納
                                 sUID.add(UID.toString());
@@ -191,9 +178,7 @@ public class TeacherStudent extends AppCompatActivity {
                                     Flag = false;
                                     if(Online != null) {
                                         //ログインしているかしてないか
-                                        Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@Online", Online.toString());
                                         if (UID.toString().equals(Online.toString())) {
-                                            Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@Online", "おったわ");
                                             ONorOFF.add(true);
                                             //ログインしてるのが分かればループを抜ける
                                             Flag = true;
@@ -208,14 +193,20 @@ public class TeacherStudent extends AppCompatActivity {
                                 }
 
                                 ////////////////////////////サムネイルの画像取得処理//////////////////////////////////
+                                //FireBaseストレージ
+                                FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                                //ストレージ
+                                StorageReference storageRef = storage.getReference();
+
                                 //画像の参照取得
-                                spaceRef = storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg");
+                                spaceRef.add(storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg"));
 
                                 //メモリ
                                 final long ONE_MEGABYTE = 1024 * 1024;
 
                                 //ストレージイベント
-                                spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                /*spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                     @Override
                                     public void onSuccess(byte[] bytes) {
                                         //サムネイル画像取得
@@ -282,11 +273,13 @@ public class TeacherStudent extends AppCompatActivity {
                                             ListView.setAdapter(Adapter);
                                         }
                                     }
-                                });
+                                });*/
                             }
                         }
                     }
                 }
+                //サムネイル取得
+                getThumnail();
             }
             @Override
             //データがとりに行けなかった場合
@@ -324,7 +317,88 @@ public class TeacherStudent extends AppCompatActivity {
         Adapter = new TecherStudentListAdapter(this, R.layout.teacher_student_item, listItems);
     }
 
-    //タップイベント
+    //サムネイル取得
+    private void getThumnail() {
+        int Listsize = spaceRef.size();
+        //リスト外を見ないようにする
+        if (Count < Listsize) {
+            final long ONE_MEGABYTE = 1024 * 1024;
+            //ストレージイベント
+            spaceRef.get(Count).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    //サムネイル画像取得
+                    Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                    //デフォルト画像のビットマップ
+                    Login = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+                    //緑○を赤にする
+                    if (!ONorOFF.get(Count)) {
+                        Login = setColor(Login, Color.argb(255, 255, 0, 0));
+                    }else{
+                        //緑にする
+                        Login = setColor(Login, Color.argb(255, 0, 255, 0));
+                    }
+                    //リストアイテム作成
+                    TeacherStudentListItem TimelineObject = new TeacherStudentListItem(Thumbnail, sName.get(Count), sUID.get(Count), Login);
+
+                    //リストに追加
+                    listItems.add(TimelineObject);
+
+                    Count++;
+
+                    getThumnail();
+
+                    if (Count == sName.size()) {
+                        //呼出し
+                        OriginalAdapter();
+
+                        //リストビュー作成
+                        ListView.setAdapter(Adapter);
+
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                    //デフォルト画像のビットマップ
+                    Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+                    //ログイン画像のビットマップ
+                    Login = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+
+                    //緑○を赤にする
+                    if (!ONorOFF.get(Count)) {
+                        Login = setColor(Login, Color.argb(255, 255, 0, 0));
+                    }else{
+                        //緑にする
+                        Login = setColor(Login, Color.argb(255, 0, 255, 0));
+                    }
+
+                    //リストアイテム作成
+                    TeacherStudentListItem TimelineObject = new TeacherStudentListItem(Thumbnail, sName.get(Count), sUID.get(Count), Login);
+
+                    //リストに追加
+                    listItems.add(TimelineObject);
+
+                    Count++;
+
+                    getThumnail();
+
+                    if (Count == sName.size()) {
+                        //呼出し
+                        OriginalAdapter();
+
+                        //リストビュー作成
+                        ListView.setAdapter(Adapter);
+                    }
+                }
+            });
+        }
+    }
+            //タップイベント
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
