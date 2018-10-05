@@ -47,7 +47,7 @@ import java.util.Map;
 public class StudentTimeline extends AppCompatActivity{
 
     //ユーザー情報
-    private static FirebaseUser user ;
+    public static FirebaseUser user ;
 
     //リストビュー
     private ListView ListView;
@@ -62,7 +62,7 @@ public class StudentTimeline extends AppCompatActivity{
     private StudentListAdapter Adapter;
 
     //FirebaseAuthオブジェクト作成
-    private FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
 
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
