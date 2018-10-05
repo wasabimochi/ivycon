@@ -47,7 +47,7 @@ import java.util.Map;
 public class StudentTimeline extends AppCompatActivity{
 
     //ユーザー情報
-    public static FirebaseUser user ;
+    private static FirebaseUser user ;
 
     //リストビュー
     private ListView ListView;
@@ -105,7 +105,7 @@ public class StudentTimeline extends AppCompatActivity{
     private boolean UIDmatch = false;   //UIDが一致したか
 
     //ユーザーID取得変数
-    private String myUID;
+    public static String myUID;
 
     //今日の日付
     Calendar calendar;
@@ -154,6 +154,7 @@ public class StudentTimeline extends AppCompatActivity{
                         user = mAuth.getCurrentUser();
                         Intent taikai = new Intent(getApplication(),Unsubscribe.class);
                         startActivity(taikai);
+                        finish();
                         break;
 
                     default:
@@ -232,19 +233,14 @@ public class StudentTimeline extends AppCompatActivity{
                     Log.d("@@@@@@@@@@@@@@@@@@@@@@@@",myUID);
 
                     //取得データのnullチェック
-<<<<<<< HEAD
-=======
                     if(UID != null && Data != null) {
                         //UIDの比較
                         if(myUID.equals(UID.toString())){
                             UIDmatch = true;
                         }
->>>>>>> 808777d2cef4b2979d50fd8f157cf625192ccc18
 
                         //UIDを元に名まえを取ってくる
                         Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
-                    if(UID != null && Data != null &&  StudentName
-                            != null) {
 
                         //nullチェック
                         if(StudentName != null) {

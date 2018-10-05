@@ -16,10 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
-
-import static android.app.PendingIntent.getActivity;
-import static com.example.a161030.ivycon20.StudentTimeline.user;
 
 public class Unsubscribe extends AppCompatActivity {
 
@@ -30,8 +26,6 @@ public class Unsubscribe extends AppCompatActivity {
 
     //Logを使う時に必要
     private final static String TAG = Unsubscribe.class.getSimpleName();
-
-    String User = String.valueOf(user);
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +43,24 @@ public class Unsubscribe extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         // OK button pressed
-                        mDatabase.child(StudentTimeline.user.getUid()).child(null).setValue(null);
+                        //login内のも消す
+                        mDatabase.child("Ivycon2").child("Login").child(StudentTimeline.myUID).child("Data").setValue(null);
+                        mDatabase.child("Ivycon2").child("Login").child(StudentTimeline.myUID).child("UID").setValue(null);
+
+                        //student内の　uid 名前　学年　番号 プロフィール
+                        mDatabase.child("Ivycon2").child("Student").child(StudentTimeline.myUID).child("Depar").setValue(null);
+                        mDatabase.child("Ivycon2").child("Student").child(StudentTimeline.myUID).child("Name").setValue(null);
+                        mDatabase.child("Ivycon2").child("Student").child(StudentTimeline.myUID).child("Num").setValue(null);
+                        mDatabase.child("Ivycon2").child("Student").child(StudentTimeline.myUID).child("Prof").setValue(null);
+                        mDatabase.child("Ivycon2").child("Student").child(StudentTimeline.myUID).child("Year").setValue(null);
+
+
+
                         Log.d(TAG, "アカウント消えた");
                         //ログイン画面へ
                         Intent intent = new Intent(getApplication(),LoginStudent.class);
-                        finish();
                         startActivity(intent);  //画面遷移
+                        finish();
 
 
                         /*
