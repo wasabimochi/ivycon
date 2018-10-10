@@ -134,6 +134,7 @@ public class TeacherStudent extends AppCompatActivity {
                     sUID.clear();
                     sName.clear();
                     ONorOFF.clear();
+                    spaceRef.clear();
                     Count = 0;
                 }
 
@@ -202,78 +203,7 @@ public class TeacherStudent extends AppCompatActivity {
                                 //画像の参照取得
                                 spaceRef.add(storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg"));
 
-                                //メモリ
-                                final long ONE_MEGABYTE = 1024 * 1024;
 
-                                //ストレージイベント
-                                /*spaceRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                    @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        //サムネイル画像取得
-                                        Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-                                        //デフォルト画像のビットマップ
-                                        Login = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-                                        //緑○を赤にする
-                                        if (!ONorOFF.get(Count)) {
-                                            Login = setColor(Login, Color.argb(255, 255, 0, 0));
-                                        }else{
-                                            //緑にする
-                                            Login = setColor(Login, Color.argb(255, 0, 255, 0));
-                                        }
-                                        //リストアイテム作成
-                                        TeacherStudentListItem TimelineObject = new TeacherStudentListItem(Thumbnail, sName.get(Count), sUID.get(Count), Login);
-
-                                        //リストに追加
-                                        listItems.add(TimelineObject);
-
-                                        Count++;
-
-                                        if (Count == sName.size()) {
-                                            //呼出し
-                                            OriginalAdapter();
-
-                                            //リストビュー作成
-                                            ListView.setAdapter(Adapter);
-
-                                        }
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception exception) {
-                                        // Handle any errors
-                                        //デフォルト画像のビットマップ
-                                        Thumbnail = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-                                        //ログイン画像のビットマップ
-                                        Login = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
-
-                                        //緑○を赤にする
-                                        if (!ONorOFF.get(Count)) {
-                                            Login = setColor(Login, Color.argb(255, 255, 0, 0));
-                                        }else{
-                                            //緑にする
-                                            Login = setColor(Login, Color.argb(255, 0, 255, 0));
-                                        }
-
-                                        //リストアイテム作成
-                                        TeacherStudentListItem TimelineObject = new TeacherStudentListItem(Thumbnail, sName.get(Count), sUID.get(Count), Login);
-
-                                        //リストに追加
-                                        listItems.add(TimelineObject);
-
-                                        Count++;
-
-                                        if (Count == sName.size()) {
-                                            //呼出し
-                                            OriginalAdapter();
-
-                                            //リストビュー作成
-                                            ListView.setAdapter(Adapter);
-                                        }
-                                    }
-                                });*/
                             }
                         }
                     }
@@ -348,7 +278,6 @@ public class TeacherStudent extends AppCompatActivity {
 
                     Count++;
 
-                    getThumnail();
 
                     if (Count == sName.size()) {
                         //呼出し
@@ -358,6 +287,8 @@ public class TeacherStudent extends AppCompatActivity {
                         ListView.setAdapter(Adapter);
 
                     }
+                    getThumnail();
+
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -385,7 +316,6 @@ public class TeacherStudent extends AppCompatActivity {
 
                     Count++;
 
-                    getThumnail();
 
                     if (Count == sName.size()) {
                         //呼出し
@@ -394,6 +324,8 @@ public class TeacherStudent extends AppCompatActivity {
                         //リストビュー作成
                         ListView.setAdapter(Adapter);
                     }
+                    getThumnail();
+
                 }
             });
         }
