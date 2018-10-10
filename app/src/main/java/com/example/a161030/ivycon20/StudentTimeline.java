@@ -145,6 +145,7 @@ public class StudentTimeline extends AppCompatActivity{
                             Intent logout = new Intent(getApplication(),LoginStudent.class);    //インテントの作成
                             startActivity(logout);
                             Log.d(TAG,"ログインしてない");
+                            finish();
                         }
                         break;
 

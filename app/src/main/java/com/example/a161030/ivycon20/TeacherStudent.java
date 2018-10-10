@@ -11,8 +11,10 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,6 +98,40 @@ public class TeacherStudent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.teacher_student);
+
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.teacher_navigationview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                //ここまではいってる
+                switch (item.getItemId()) {
+
+                    case R.id.myPage:
+                        break;
+
+                    case R.id.logout:
+                        //ログアウト
+                        mAuth.signOut();
+                        //ユーザーの現在の状況を取得(ログインしているかなど)
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        finish();
+                     //ログインしているかどうかの判定
+                        if (user != null) { //ログインしていればログを出すだけ
+                        } else {            //ログインしていなければログを出しログイン画面に遷移する\
+                            //アラートを表示
+                            Toast.makeText(TeacherStudent.this, "ログアウトしました。", Toast.LENGTH_SHORT).show();
+                            Intent logout = new Intent(getApplication(), LoginStudent.class);    //インテントの作成
+                            startActivity(logout);
+                            finish();
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
 
         //Listを作る
         ListView = (ListView) findViewById(R.id.TeacherView);
