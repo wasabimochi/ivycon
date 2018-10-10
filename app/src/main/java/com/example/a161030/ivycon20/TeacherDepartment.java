@@ -58,8 +58,8 @@ public class TeacherDepartment extends AppCompatActivity {
                             Toast.makeText(TeacherDepartment.this, "ログアウトしました。", Toast.LENGTH_SHORT).show();
                             Intent logout = new Intent(getApplication(), LoginStudent.class);    //インテントの作成
                             startActivity(logout);
-                            finish();
                             Log.d(TAG, "ログインしてない");
+                            finish();
                         }
                         break;
 
