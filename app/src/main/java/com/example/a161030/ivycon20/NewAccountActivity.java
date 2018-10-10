@@ -2,6 +2,7 @@ package com.example.a161030.ivycon20;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -55,6 +56,8 @@ public class NewAccountActivity extends AppCompatActivity {
 
     //Logを使う時に必要
     private final static String TAG = NewAccountActivity.class.getSimpleName();
+
+    int test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +183,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
         // 選択されているアイテムのIndexを取得
 
-        final int year_idx = department.getSelectedItemPosition();
+        final int year_idx = year.getSelectedItemPosition();
 
         // 選択されているアイテムを取得
         String year_item = (String)department.getSelectedItem();
@@ -249,6 +252,8 @@ public class NewAccountActivity extends AppCompatActivity {
         //年を取得
         final int years = calendar.get(Calendar.YEAR);
 
+        test = years - year_idx;
+
         //名前がきちんと入力されていなければ
         if (name.getText().length() == 0) {
 
@@ -314,7 +319,7 @@ public class NewAccountActivity extends AppCompatActivity {
                     //学科
                     childUpdates.put("Depar", finalDepartment_item);
                     //入学年
-                    childUpdates.put("Year", String.valueOf(years - year_idx));
+                    childUpdates.put("Year", test);
                     //名前
                     childUpdates.put("Name", name.getText().toString());
 
