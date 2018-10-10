@@ -154,8 +154,6 @@ public class OtherPage extends AppCompatActivity {
                         //画像取得
                         Bitmap bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
 
-                        bmp = Bitmap.createScaledBitmap(bmp, 70, 70, false);
-
                         //設定
                         image.setImageBitmap(bmp);
 
