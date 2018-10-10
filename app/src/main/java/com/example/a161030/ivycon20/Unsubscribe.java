@@ -77,7 +77,14 @@ public class Unsubscribe extends AppCompatActivity {
 
                     }
                 })
-                .setNegativeButton("削除しない", null)
+                .setNegativeButton("削除しない", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent logout = new Intent(getApplication(), StudentTimeline.class);    //インテントの作成
+                        startActivity(logout);
+                        finish();
+                    }
+                })
                 .show();
         }
 
