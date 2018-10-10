@@ -62,7 +62,7 @@ public class StudentTimeline extends AppCompatActivity{
     private StudentListAdapter Adapter;
 
     //FirebaseAuthオブジェクト作成
-    private FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
 
     //DatabaseReferenceオブジェクト作成
     private DatabaseReference mDatabase;
@@ -97,7 +97,7 @@ public class StudentTimeline extends AppCompatActivity{
     private boolean UIDmatch = false;   //UIDが一致したか
 
     //ユーザーID取得変数
-    private String myUID;
+    public static String myUID;
 
     //今日の日付
     private Calendar calendar;
@@ -149,6 +149,7 @@ public class StudentTimeline extends AppCompatActivity{
                         user = mAuth.getCurrentUser();
                         Intent taikai = new Intent(getApplication(),Unsubscribe.class);
                         startActivity(taikai);
+                        finish();
                         break;
 
                     default:

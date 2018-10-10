@@ -6,10 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <item
+        android:drawable="@color/window_background"/>
     <item>
         <bitmap
             android:gravity="center"
             android:src="@drawable/log_top" />
+        <color android:color="@color/window_background"/>
     </item>
 
 </layer-list>
