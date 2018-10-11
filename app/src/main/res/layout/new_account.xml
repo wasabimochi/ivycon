@@ -25,7 +25,7 @@
             <TextView
                 android:id="@+id/textView24"
                 android:layout_width="match_parent"
-                android:layout_height="49dp"
+                android:layout_height="match_parent"
                 android:text="新規登録"
                 android:textAlignment="center"
                 android:textSize="36sp"
