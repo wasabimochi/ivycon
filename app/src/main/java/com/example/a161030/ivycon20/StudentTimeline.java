@@ -3,6 +3,7 @@ package com.example.a161030.ivycon20;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -108,6 +109,12 @@ public class StudentTimeline extends AppCompatActivity{
     //ログインの数を計算
     private int LoginCount = 200;
 
+    //ぐるぐるのやつ
+    private ProgressDialog progressDialog;
+
+    //
+    private boolean ImLogin = false;
+    private int showcnt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -195,6 +202,7 @@ public class StudentTimeline extends AppCompatActivity{
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 //リストビューとリスト中身の削除
                 if(sUID.size() > 0){
                     listItems.clear();
@@ -207,14 +215,20 @@ public class StudentTimeline extends AppCompatActivity{
                     inDate.clear();
                     spaceRef.clear();
                     Count = 0;
-                    LoginCount = 200;
                 }
 
-                Toast.makeText(StudentTimeline.this, "データ取得中。", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(StudentTimeline.this, "データ取得中。", Toast.LENGTH_SHORT).show();
+
+                showcnt++;
+                //ぐるぐるのセット
+                progressDialog = new ProgressDialog(StudentTimeline.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("データを取得しています");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
 
                 //自分のデータを取りに行く
                 MyDate();
-
 
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").child(String.valueOf(calendar.get(Calendar.DATE))).getChildren()) {
@@ -256,35 +270,14 @@ public class StudentTimeline extends AppCompatActivity{
                         }
                     }
                 }
-                //今日ログインしてなかったらログインを書き込みに行く
-                if(InBluetooth && !UIDmatch){
-
-                    //データを書き込む
-                    //書き込む内容
-                    //UID
-                    Object postValuesUID = myUID;
-
-                    //今日の時間
-                    Object postValuesDate  = calendar.get(Calendar.HOUR_OF_DAY);
-                    postValuesDate = postValuesDate.toString() + ":" + calendar.get(Calendar.MINUTE);
-
-                    //インスタンス取得
-                    Map<String, Object> childUpdates = new HashMap<>();
-
-                    String C = Integer.toString(LoginCount);
-
-                    //当日以外のログインを消す
-                    //UID
-                    childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + C + "/UID"  , postValuesUID);
-                    //日付
-                    childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + C + "/Data", postValuesDate);
-
-                    //イベント実行
-                    mDatabase.updateChildren(childUpdates);
-
-                }
                 //サムネイル取得
                 getThumnail();
+
+                int Spacesize = spaceRef.size();
+                //ぐるぐるをとめる
+                if(Spacesize < 1){
+                    progressDialog.dismiss();
+                }
             }
             @Override
             //データがとりに行けなかった場合
@@ -378,9 +371,6 @@ public class StudentTimeline extends AppCompatActivity{
     private void getThumnail() {
         int Listsize = spaceRef.size();
         if(Count < Listsize) {
-            Log.w("spaceRef", spaceRef.get(Count).toString());
-
-
             final long ONE_MEGABYTE = 1024 * 1024;
             //ストレージイベント
             spaceRef.get(Count).getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -408,7 +398,11 @@ public class StudentTimeline extends AppCompatActivity{
                             //リストビュー作成
                             ListView.setAdapter(Adapter);
 
-
+                            while (showcnt > 0) {
+                                showcnt--;
+                                //ぐるぐるをとめる
+                                progressDialog.dismiss();
+                            }
                         }
                         getThumnail();
 
@@ -442,7 +436,11 @@ public class StudentTimeline extends AppCompatActivity{
                             //リストビュー作成
                             ListView.setAdapter(Adapter);
 
-
+                            while(showcnt > 0) {
+                                showcnt--;
+                                //ぐるぐるをとめる
+                                progressDialog.dismiss();
+                            }
                         }
                         getThumnail();
 
@@ -450,6 +448,65 @@ public class StudentTimeline extends AppCompatActivity{
                 }
             });
         }
+    }
+
+    //ログインデータの書き込み
+    private void putData (){
+        //FireBaseのイベント
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
+                for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Login").child(String.valueOf(calendar.get(Calendar.DATE))).getChildren()) {
+
+                    //UIDをとってくる
+                    Object UID = postSnapshot.child("UID").getValue();
+
+                    //取得データのnullチェック
+                    if (UID != null) {
+                        LoginCount--;
+                        //UIDの比較
+                        if (myUID.equals(UID.toString())) {
+                            //ログインしてるかの識別
+                            ImLogin = true;
+                            break;
+                        }
+                    }
+                }
+                //ログインしていなければ実行
+                if(!ImLogin){
+                    //データを書き込む
+                    //書き込む内容
+                    //UID
+                    Object postValuesUID = myUID;
+
+                    //今日の時間
+                    Object postValuesDate  = calendar.get(Calendar.HOUR_OF_DAY);
+                    postValuesDate = postValuesDate.toString() + ":" + calendar.get(Calendar.MINUTE);
+
+                    //インスタンス取得
+                    Map<String, Object> childUpdates = new HashMap<>();
+
+                    String C = Integer.toString(LoginCount);
+
+                    //当日以外のログインを消す
+                    //UID
+                    childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + C + "/UID"  , postValuesUID);
+                    //日付
+                    childUpdates.put("/Ivycon2/Login/" + String.valueOf(calendar.get(Calendar.DATE)) + "/" + C + "/Data", postValuesDate);
+
+                    //イベント実行
+                    mDatabase.updateChildren(childUpdates);
+
+                }
+            }
+            @Override
+            //データがとりに行けなかった場合
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w("エラー", databaseError.toException());
+            }
+        });
     }
         //intデータを 2桁16進数に変換するメソッド
     public String IntToHex2(int i) {
@@ -532,17 +589,8 @@ public class StudentTimeline extends AppCompatActivity{
             }
             //ビーコンを見つけたらfirebaseにアクセスさせてステータスを書き換える
             if(Inivy) {
-                Object postValuesDate  = calendar.get(Calendar.MILLISECOND);
-
-                InBluetooth = true;
-                //インスタンス取得
-                Map<String, Object> childUpdates = new HashMap<>();
-
-                //firebaseのイベントを強制的に発生させる
-                childUpdates.put("/InBluetooth", postValuesDate);
-
-                //イベント実行
-                mDatabase.updateChildren(childUpdates);
+                //ログイン
+                putData();
 
                 //スキャン停止
                 final BluetoothManager bluetoothManager =
