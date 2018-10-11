@@ -39,6 +39,8 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
     //Logを使う時に必要
     private final static String TAG = LoginStudent.class.getSimpleName();
 
+    String UID;
+
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,17 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
 
         //ログインしていればログイン処理を飛ばしてタイムラインに飛ぶ
         if(user != null){
-            Intent intent = new Intent(getApplication(), StudentTimeline.class);    //インテントの作成
-            startActivity(intent);  //画面遷移
+            UID = user.getUid();
+            Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@",UID);
+            if(!UID.equals("WKw4EC1YyMWgOQDo9yVHVsxIeua2")) {
+                Intent intent = new Intent(getApplication(), StudentTimeline.class);    //インテントの作成
+                startActivity(intent);  //画面遷移
 
-            finish();   //遷移したらこの画面を消す
+                finish();   //遷移したらこの画面を消す
+            }else {
+                button_segue=(Button)findViewById(R.id.login_button);    //button3を見つけ出す
+                button_segue.setOnClickListener(this);              //button3にクリックイベントをぶち込む
+            }
         }else{
             button_segue=(Button)findViewById(R.id.login_button);    //button3を見つけ出す
             button_segue.setOnClickListener(this);              //button3にクリックイベントをぶち込む
