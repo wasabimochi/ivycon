@@ -1,5 +1,6 @@
 package com.example.a161030.ivycon20;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -94,6 +95,9 @@ public class TeacherStudent extends AppCompatActivity {
     //画像の参照取得
     private ArrayList<StorageReference> spaceRef = new ArrayList<>();
 
+    //ぐるぐるのやつ
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,7 +179,13 @@ public class TeacherStudent extends AppCompatActivity {
                     Count = 0;
                 }
 
-                Toast.makeText(TeacherStudent.this, "データ取得中。", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(TeacherStudent.this, "データ取得中。", Toast.LENGTH_SHORT).show();
+
+                progressDialog = new ProgressDialog(TeacherStudent.this);
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage("データを取得しています");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
 
                 //Ivycon2/Loginの子要素分繰り返すしかも順番に見ていってくれる
                 for (DataSnapshot postSnapshot : dataSnapshot.child("Ivycon2").child("Student").getChildren()) {
@@ -323,6 +333,9 @@ public class TeacherStudent extends AppCompatActivity {
                         //リストビュー作成
                         ListView.setAdapter(Adapter);
 
+                        //ぐるぐるをとめる
+                        progressDialog.dismiss();
+
                     }
                     getThumnail();
 
@@ -360,6 +373,10 @@ public class TeacherStudent extends AppCompatActivity {
 
                         //リストビュー作成
                         ListView.setAdapter(Adapter);
+
+                        //ぐるぐるをとめる
+                        progressDialog.dismiss();
+
                     }
                     getThumnail();
 

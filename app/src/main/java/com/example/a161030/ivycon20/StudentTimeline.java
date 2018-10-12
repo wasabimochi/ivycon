@@ -93,10 +93,6 @@ public class StudentTimeline extends AppCompatActivity{
     private static String uuid=null;
     private static boolean Inivy = false; //ivyにいるか
 
-    private boolean InBluetooth = false;    //Bluetoothの範囲に入ったか
-
-    private boolean UIDmatch = false;   //UIDが一致したか
-
     //ユーザーID取得変数
     public static String myUID;
 
@@ -107,14 +103,17 @@ public class StudentTimeline extends AppCompatActivity{
     private ArrayList<StorageReference> spaceRef = new ArrayList<>();
 
     //ログインの数を計算
-    private int LoginCount = 200;
+    private int LoginCount = 300;
 
     //ぐるぐるのやつ
     private ProgressDialog progressDialog;
 
-    //
+    //ログインの判別
     private boolean ImLogin = false;
-    private int showcnt = 0;
+
+    //ステイステイ
+    private boolean Stey = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,15 +214,13 @@ public class StudentTimeline extends AppCompatActivity{
                     inDate.clear();
                     spaceRef.clear();
                     Count = 0;
+                    progressDialog.dismiss();
                 }
 
-                //Toast.makeText(StudentTimeline.this, "データ取得中。", Toast.LENGTH_SHORT).show();
 
-                showcnt++;
-                //ぐるぐるのセット
                 progressDialog = new ProgressDialog(StudentTimeline.this);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.setMessage("データを取得しています");
+                progressDialog.setMessage("データの取得をしています");
                 progressDialog.setCancelable(true);
                 progressDialog.show();
 
@@ -241,11 +238,6 @@ public class StudentTimeline extends AppCompatActivity{
 
                     //取得データのnullチェック
                     if(UID != null && Data != null) {
-                        //UIDの比較
-                        if(myUID.equals(UID.toString())){
-                            UIDmatch = true;
-                        }
-
                         //UIDを元に名まえを取ってくる
                         Object StudentName = dataSnapshot.child("Ivycon2").child("Student").child(UID.toString()).child("Name").getValue();
 
@@ -266,12 +258,13 @@ public class StudentTimeline extends AppCompatActivity{
                             //画像の参照取得
                             spaceRef.add(storageRef.child("Image/Icon/" + UID.toString() + "/" + UID.toString() + "_icon.jpeg"));
 
-                            LoginCount--;
                         }
                     }
                 }
+
                 //サムネイル取得
                 getThumnail();
+
 
                 int Spacesize = spaceRef.size();
                 //ぐるぐるをとめる
@@ -315,7 +308,7 @@ public class StudentTimeline extends AppCompatActivity{
     //自分のデータを取りに行く
     private void MyDate() {
         //FireBaseのイベント
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -382,7 +375,6 @@ public class StudentTimeline extends AppCompatActivity{
                         //サムネイル画像取得
                         Thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-
                         //リストアイテム作成
                         StudentListItem TimelineObject = new StudentListItem(Thumbnail, sName.get(Count) + inDate.get(Count), sUID.get(Count));
 
@@ -391,6 +383,8 @@ public class StudentTimeline extends AppCompatActivity{
 
                         Count++;
 
+                        getThumnail();
+
                         if (Count == sName.size()) {
                             //呼出し
                             OriginalAdapter();
@@ -398,13 +392,10 @@ public class StudentTimeline extends AppCompatActivity{
                             //リストビュー作成
                             ListView.setAdapter(Adapter);
 
-                            while (showcnt > 0) {
-                                showcnt--;
-                                //ぐるぐるをとめる
-                                progressDialog.dismiss();
-                            }
+                            //ぐるぐるをとめる
+                            progressDialog.dismiss();
+                            Stey = true;
                         }
-                        getThumnail();
 
                     }
                 }
@@ -428,6 +419,7 @@ public class StudentTimeline extends AppCompatActivity{
 
                         Count++;
 
+                        getThumnail();
 
                         if (Count == sName.size()) {
                             //呼出し
@@ -436,13 +428,11 @@ public class StudentTimeline extends AppCompatActivity{
                             //リストビュー作成
                             ListView.setAdapter(Adapter);
 
-                            while(showcnt > 0) {
-                                showcnt--;
-                                //ぐるぐるをとめる
-                                progressDialog.dismiss();
-                            }
+                            //ぐるぐるをとめる
+                            progressDialog.dismiss();
+                            Stey = true;
+
                         }
-                        getThumnail();
 
                     }
                 }
@@ -453,7 +443,7 @@ public class StudentTimeline extends AppCompatActivity{
     //ログインデータの書き込み
     private void putData (){
         //FireBaseのイベント
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -465,12 +455,20 @@ public class StudentTimeline extends AppCompatActivity{
 
                     //取得データのnullチェック
                     if (UID != null) {
-                        LoginCount--;
+                        //キー
+                        Object Key = postSnapshot.getKey();
+
+                        int Keyint = Integer.parseInt(Key.toString());
+
+                        if(LoginCount > Keyint){
+                            LoginCount = Integer.parseInt(Key.toString());
+                            LoginCount--;
+
+                        }
                         //UIDの比較
                         if (myUID.equals(UID.toString())) {
                             //ログインしてるかの識別
                             ImLogin = true;
-                            break;
                         }
                     }
                 }
@@ -589,16 +587,17 @@ public class StudentTimeline extends AppCompatActivity{
             }
             //ビーコンを見つけたらfirebaseにアクセスさせてステータスを書き換える
             if(Inivy) {
-                //ログイン
-                putData();
+                if(Stey) {
+                    //ログイン
+                    putData();
 
-                //スキャン停止
-                final BluetoothManager bluetoothManager =
-                        (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
-                assert bluetoothManager != null;
-                BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
-                mBluetoothAdapter.stopLeScan(mLeScanCallback);
-
+                    //スキャン停止
+                    final BluetoothManager bluetoothManager =
+                            (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+                    assert bluetoothManager != null;
+                    BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                }
             }
         }
     };
