@@ -53,7 +53,9 @@
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:background="@drawable/button_state"
+        android:textColor="@color/text_color"/>
 
     <EditText
         android:id="@+id/teacher_login_password"
