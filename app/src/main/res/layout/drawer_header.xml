@@ -4,34 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/primary_dark_material_light">
+    android:background="@android:color/white">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/myIcon"
-            android:layout_width="103dp"
+            android:layout_width="100dp"
             android:layout_height="76dp"
-            android:layout_marginTop="13dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="143dp"
+            android:layout_width="280dp"
             android:layout_height="72dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="62dp"
+            android:layout_toEndOf="@+id/myIcon"
             android:gravity="center_horizontal|center_vertical"
             android:text="MyName"
+            android:textAlignment="center"
             android:textSize="35sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.495"
