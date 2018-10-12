@@ -167,7 +167,8 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="120dp"
                 android:text="作成"
-                android:background="@drawable/button_background"/>
+                android:background="@drawable/button_state"
+                android:textColor="@color/text_color"/>
 
         </LinearLayout>
 
