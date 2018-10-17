@@ -37,7 +37,7 @@
         android:ems="10"
         android:hint="メールアドレスを入力してください"
         android:inputType="textPersonName"
-        android:text="@string/kei_gmail_com"
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,7 +66,7 @@
         android:ems="10"
         android:hint="パスワードを入力してください"
         android:inputType="textPassword"
-        android:text="@string/abcde123"
+        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
