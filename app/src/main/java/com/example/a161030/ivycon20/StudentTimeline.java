@@ -270,6 +270,7 @@ public class StudentTimeline extends AppCompatActivity{
                 //ぐるぐるをとめる
                 if(Spacesize < 1){
                     progressDialog.dismiss();
+                    Stey = true;
                 }
             }
             @Override
@@ -460,7 +461,7 @@ public class StudentTimeline extends AppCompatActivity{
 
                         int Keyint = Integer.parseInt(Key.toString());
 
-                        if(LoginCount > Keyint){
+                        if(LoginCount >= Keyint){
                             LoginCount = Integer.parseInt(Key.toString());
                             LoginCount--;
 
