@@ -18,12 +18,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-<<<<<<< HEAD
         android:background="@drawable/button_background"/>
-=======
-        android:background="@drawable/button_state"
-        android:textColor="@color/text_color"/>
->>>>>>> feature/fix_ivycon2
 
     <TextView
         android:id="@+id/textView17"
