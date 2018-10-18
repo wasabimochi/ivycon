@@ -21,4 +21,10 @@
         <item>モバイルシステムクリエイト学科</item>
     </string-array>
 
+    <string name="mailadress_hint"><font size="14">メールアドレスを入力してください</font></string>
+    <string name="passsword_hint"><font size="14">パスワードを入力してください</font></string>
+    <string name="new_passsword_hint"><font size="14">6文字パスワードを入力してください</font></string>
+    <string name="new_number_hint"><font size="14">学籍番号を入力してください</font></string>
+    <string name="new_nmae_hint"><font size="14">名前を入力してください</font></string>
+
 </resources>

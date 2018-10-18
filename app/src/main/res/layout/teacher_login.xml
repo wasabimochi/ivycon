@@ -10,10 +10,13 @@
         android:id="@+id/textView2"
         android:layout_width="121dp"
         android:layout_height="31dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="168dp"
         android:text="Pass Word"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,23 +24,28 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="84dp"
         android:text="Mail Address"
         android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/teacher_login_address"
-        android:layout_width="293dp"
+        android:layout_width="292dp"
         android:layout_height="43dp"
+        android:layout_marginEnd="48dp"
         android:layout_marginStart="44dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="124dp"
         android:ems="10"
-        android:hint="メールアドレスを入力してください"
+        android:hint="@string/mailadress_hint"
         android:inputType="textPersonName"
         android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,27 +54,30 @@
         android:id="@+id/teacher_login_button"
         android:layout_width="112dp"
         android:layout_height="44dp"
-        android:layout_marginTop="288dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="304dp"
+        android:background="@drawable/button_state"
         android:text="ログイン"
+        android:textColor="@color/text_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        android:background="@drawable/button_state"
-        android:textColor="@color/text_color"/>
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/teacher_login_password"
         android:layout_width="292dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="200dp"
         android:ems="10"
-        android:hint="パスワードを入力してください"
+        android:hint="@string/passsword_hint"
         android:inputType="textPassword"
         android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -75,6 +75,9 @@ public class OtherPage extends AppCompatActivity {
         //アイコン
         image = (ImageView)findViewById(R.id.imageView3);
 
+        TextView mypage = findViewById(R.id.textView10);
+        mypage.setText(null);
+
         //FireBaseのイベント
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override

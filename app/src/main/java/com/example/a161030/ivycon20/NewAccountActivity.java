@@ -232,7 +232,7 @@ public class NewAccountActivity extends AppCompatActivity {
 
         //FireBaseのイベント
         final String finalDepartment_item1 = department_item;
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        /*mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -245,7 +245,7 @@ public class NewAccountActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.w("エラー", databaseError.toException());
             }
-        });
+        });*/
 
         //現在のカレンダー取得
         Calendar calendar = Calendar.getInstance();
@@ -305,6 +305,21 @@ public class NewAccountActivity extends AppCompatActivity {
                     //UIDの取得
                     assert user != null;
                     UID = user.getUid();
+
+                    mDatabase.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        //一度データを読み込み、そのあとはデータの中身が変わるたびに実行される
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            //Deparをとってくる
+                            Depar = dataSnapshot.child("Ivycon2").child("Deper").child(finalDepartment_item1).getValue();
+                            Log.w("きたああああああああああああああああああ",Depar.toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Log.w("エラー", databaseError.toException());
+                        }
+                    });
 
                     //インスタンス取得
                     Map<String, Object> childUpdates = new HashMap<>();

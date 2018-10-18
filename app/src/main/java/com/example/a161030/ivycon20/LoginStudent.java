@@ -64,7 +64,7 @@ public class LoginStudent extends AppCompatActivity implements OnClickListener {
         if(user != null){
             UID = user.getUid();
             Log.w("@@@@@@@@@@@@@@@@@@@@@@@@@@@@",UID);
-            if(!UID.equals("WKw4EC1YyMWgOQDo9yVHVsxIeua2")) {
+            if(!UID.equals("zBgBy6JgHpWk8888lyPUC1CqVM43")) {
                 Intent intent = new Intent(getApplication(), StudentTimeline.class);    //インテントの作成
                 startActivity(intent);  //画面遷移
 
